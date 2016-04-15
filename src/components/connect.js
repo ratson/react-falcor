@@ -35,14 +35,25 @@ const injectFalcor = (WrappedComponent) => {
   return hoistStatics(Connect, WrappedComponent)
 }
 
-export default function connect(pathSets, mergeProps, options = {}) {
-  return function wrapWithConnect(WrappedComponent) {
-    const asyncProps = _.reduce(pathSets, (r, pathSet, key) => {
-      r[key] = ({falcor}) => {
-        return falcor.getValue(pathSet)
+const reducePathSet = (r, pathSetOrFunction, prop) => {
+  r[prop] = ({falcor, ...ownProps}) => {
+    const pathSet = _.isFunction(pathSetOrFunction) ? pathSetOrFunction(ownProps) : pathSetOrFunction
+    if (_.isArray(pathSet)) {
+      if (_.isArray(_.last(pathSet))) {
+        return falcor.get(pathSet).then(res => {
+          return _.get(res, ['json', ..._.dropRight(pathSet)])
+        })
       }
-      return r
-    }, {})
+      return falcor.getValue(pathSet)
+    }
+    return pathSet
+  }
+  return r
+}
+
+export default function connect(pathSets, options = {}) {
+  return function wrapWithConnect(WrappedComponent) {
+    const asyncProps = _.reduce(pathSets, reducePathSet, {})
 
     return injectFalcor(resolve(asyncProps)(WrappedComponent))
   }
