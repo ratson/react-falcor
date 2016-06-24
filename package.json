@@ -23,7 +23,7 @@
     "babel-register": "^6.9.0",
     "falcor": "^0.1.17",
     "mocha": "^2.5.3",
-    "npm-run-all": "^2.2.0",
+    "npm-run-all": "^2.2.2",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "rewire": "^2.5.1",

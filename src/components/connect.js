@@ -5,6 +5,7 @@ import get from 'lodash/get'
 import isArray from 'lodash/isArray'
 import isFunction from 'lodash/isFunction'
 import last from 'lodash/last'
+import reduce from 'lodash/reduce'
 
 import { resolve } from 'react-resolver'
 import hoistStatics from 'hoist-non-react-statics'
@@ -56,7 +57,7 @@ const reducePathSet = (r, pathSetOrFunction, prop) => {
 
 export default function connect(pathSets, options = {}) {
   return function wrapWithConnect(WrappedComponent) {
-    const asyncProps = pathSets.reduce(reducePathSet, {})
+    const asyncProps = reduce(pathSets, reducePathSet, {})
     return injectFalcor(resolve(asyncProps)(WrappedComponent))
   }
 }
