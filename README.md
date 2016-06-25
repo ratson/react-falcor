@@ -5,7 +5,7 @@ React binding for Falcor.
 ## Installation
 
 ```
-npm install --save react-falcor
+npm install react-falcor --save
 ```
 
 ## Usage
@@ -14,7 +14,7 @@ npm install --save react-falcor
 import { Model } from 'falcor'
 import HttpDataSource from 'falcor-http-datasource'
 
-import { Provider, connect } from 'react-falcor'
+import { Provider, getValue } from 'react-falcor'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
@@ -22,7 +22,7 @@ const falcor = new Model({
   source: new HttpDataSource('/model.json'),
 })
 
-const App = connect({
+const App = getValue({
   greeting: ['greeting'],
 })(({greeting}) => {
   return (
