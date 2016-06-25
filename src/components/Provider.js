@@ -1,4 +1,5 @@
 import invariant from 'invariant'
+import noop from 'lodash/noop'
 
 import React, { PropTypes } from 'react'
 
@@ -6,9 +7,16 @@ class Provider extends React.Component {
   constructor(props, context) {
     super(props, context)
 
-    invariant(props.falcor, `"falcor" is not provided`)
+    const { falcor } = props
+    invariant(props, `"falcor" is not provided`)
 
-    this.falcor = props.falcor
+    const originalCallback = falcor._root.onChange || noop
+    falcor._root.onChange = () => {
+      originalCallback()
+      this.forceUpdate()
+    }
+
+    this.falcor = falcor
   }
 
   getChildContext() {
