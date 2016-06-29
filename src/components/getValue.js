@@ -3,7 +3,7 @@ import map from 'lodash/map'
 
 import resolve from './resolve'
 
-export default (mapGetValueToProps) => {
+export default (mapGetValueToProps = {}) => {
   return resolve(async (falcor, ownProps) => {
     const getValueToProps = isFunction(mapGetValueToProps) ? mapGetValueToProps(ownProps) : mapGetValueToProps
     const props = {}
