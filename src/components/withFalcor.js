@@ -1,16 +1,16 @@
 import { PropTypes } from 'react'
+import compose from 'recompose/compose'
 import getContext from 'recompose/getContext'
 import withProps from 'recompose/withProps'
 
 export default (mapFalcorToProps) => {
+  const funcs = [
+    getContext({
+      falcor: PropTypes.object,
+    }),
+  ]
   if (mapFalcorToProps) {
-    return WrappedComponent => {
-      return getContext({
-        falcor: PropTypes.object,
-      })(withProps(mapFalcorToProps)(WrappedComponent))
-    }
+    funcs.push(withProps(mapFalcorToProps))
   }
-  return getContext({
-    falcor: PropTypes.object,
-  })
+  return compose(...funcs)
 }
