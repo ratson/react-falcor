@@ -14,7 +14,7 @@
     "hoist-non-react-statics": "^1.2.0",
     "invariant": "^2.2.1",
     "lodash": "^4.13.1",
-    "react-async-state": "^0.2.1",
+    "react-async-state": "^0.3.0",
     "react-resolver": "^3.0.2",
     "recompose": "^0.20.2"
   },
@@ -28,10 +28,10 @@
     "falcor": "^0.1.17",
     "mocha": "^2.5.3",
     "npm-run-all": "^2.3.0",
-    "react": "^15.2.0",
-    "react-dom": "^15.2.0",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
     "rewire": "^2.5.2",
-    "rimraf": "^2.5.2",
+    "rimraf": "^2.5.3",
     "should": "^9.0.2"
   },
   "repository": "ratson/react-falcor",
