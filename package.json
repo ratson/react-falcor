@@ -7,15 +7,15 @@
     "build": "babel src --out-dir lib",
     "clean": "rimraf lib dist coverage",
     "prepublish": "npm-run-all clean build",
-    "test": "mocha"
+    "test": "csc && mocha"
   },
   "dependencies": {
-    "babel-runtime": "^6.9.2",
+    "babel-runtime": "^6.11.6",
     "hoist-non-react-statics": "^1.2.0",
     "invariant": "^2.2.1",
-    "lodash": "^4.13.1",
+    "lodash": "^4.15.0",
     "react-async-state": "^0.3.0",
-    "react-resolver": "^3.0.2",
+    "react-resolver": "^3.0.3",
     "recompose": "^0.20.2"
   },
   "devDependencies": {
@@ -25,6 +25,7 @@
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.11.6",
+    "csc": "0.0.2",
     "falcor": "^0.1.17",
     "mocha": "^3.0.2",
     "npm-run-all": "^2.3.0",
@@ -45,5 +46,8 @@
   "keywords": [
     "falcor",
     "react"
-  ]
+  ],
+  "xo": {
+    "env": ["mocha"]
+  }
 }

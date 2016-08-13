@@ -1,11 +1,7 @@
-import should from 'should'
+import 'should'
 import rewire from 'rewire'
 
 import falcor from 'falcor'
-
-import React from 'react'
-
-import { Provider } from '../../src'
 
 const connect = rewire('../../src/components/connect')
 const reducePathSet = connect.__get__('reducePathSet')
@@ -32,10 +28,8 @@ describe('React', () => {
   })
 
   describe('connect', () => {
-
     describe('reducePathSet', () => {
-
-      const resolve = (pathSet) => reducePathSet({}, pathSet, 'x')['x']({falcor: model})
+      const resolve = (pathSet) => reducePathSet({}, pathSet, 'x').x({falcor: model})
 
       it('should resolve greeting', () => {
         return resolve(['greeting']).should.be.finally.equal('Hello World!')
@@ -51,8 +45,6 @@ describe('React', () => {
           done: true,
         })
       })
-
     })
-
   })
 })

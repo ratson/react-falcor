@@ -7,9 +7,9 @@ import isFunction from 'lodash/isFunction'
 import last from 'lodash/last'
 import reduce from 'lodash/reduce'
 
-import { resolve } from 'react-resolver'
+import {resolve} from 'react-resolver'
 import hoistStatics from 'hoist-non-react-statics'
-import React, { PropTypes } from 'react'
+import {PropTypes} from 'react'
 
 function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component'
@@ -46,7 +46,7 @@ const reducePathSet = (r, pathSetOrFunction, prop) => {
     const pathSet = isFunction(pathSetOrFunction) ? pathSetOrFunction(ownProps) : pathSetOrFunction
     if (isArray(pathSet)) {
       if (isArray(last(pathSet))) {
-        return falcor.get(pathSet).then(res => get(res, ['json', ...dropRight(pathSet)]))
+        return falcor.get(pathSet).then((res) => get(res, ['json', ...dropRight(pathSet)]))
       }
       return falcor.getValue(pathSet)
     }
@@ -55,7 +55,7 @@ const reducePathSet = (r, pathSetOrFunction, prop) => {
   return r
 }
 
-export default function connect(pathSets, options = {}) {
+export default function connect(pathSets) {
   return function wrapWithConnect(WrappedComponent) {
     const asyncProps = reduce(pathSets, reducePathSet, {})
     return injectFalcor(resolve(asyncProps)(WrappedComponent))
