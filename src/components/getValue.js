@@ -3,7 +3,11 @@ import map from 'lodash/map'
 
 import resolve from './resolve'
 
-export default (mapGetValueToProps = {}) => {
+function defaultTransformProps(props) {
+  return props
+}
+
+export default (mapGetValueToProps = {}, transformProps = defaultTransformProps) => {
   return resolve(async (falcor, ownProps) => {
     const getValueToProps = isFunction(mapGetValueToProps) ? mapGetValueToProps(ownProps) : mapGetValueToProps
     const props = {}
@@ -12,6 +16,6 @@ export default (mapGetValueToProps = {}) => {
         props[k] = v
       })
     }))
-    return props
+    return transformProps(props)
   })
 }
