@@ -25,15 +25,18 @@
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.11.6",
-    "csc": "0.0.2",
+    "csc": "0.0.4",
+    "enzyme": "^2.4.1",
     "falcor": "^0.1.17",
+    "jsdom": "^9.4.2",
     "mocha": "^3.0.2",
     "npm-run-all": "^2.3.0",
     "react": "^15.3.0",
+    "react-addons-test-utils": "^15.3.0",
     "react-dom": "^15.3.0",
     "rewire": "^2.5.2",
     "rimraf": "^2.5.4",
-    "should": "^11.0.0"
+    "should": "^11.1.0"
   },
   "repository": "ratson/react-falcor",
   "license": "MIT",
@@ -48,8 +51,9 @@
     "react"
   ],
   "xo": {
-    "env": [
-      "mocha"
-    ]
+    "rules": {
+      "react/jsx-filename-extension": "off",
+      "react/prop-types": "off"
+    }
   }
 }

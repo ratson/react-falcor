@@ -9,7 +9,7 @@ import reduce from 'lodash/reduce'
 
 import {resolve} from 'react-resolver'
 import hoistStatics from 'hoist-non-react-statics'
-import {PropTypes} from 'react'
+import React, {PropTypes} from 'react'
 
 function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component'
@@ -28,7 +28,7 @@ const injectFalcor = (WrappedComponent) => {
       `or explicitly pass "falcor" as a prop to "${displayName}".`
     )
 
-    return (<WrappedComponent falcor={falcor} {...props} />)
+    return (<WrappedComponent falcor={falcor} {...props}/>)
   }
   Connect.displayName = displayName
   Connect.WrappedComponent = WrappedComponent
