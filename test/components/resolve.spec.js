@@ -1,4 +1,5 @@
 import 'should'
+import delay from 'timeout-as-promise'
 import React from 'react'
 import {mount, shallow} from 'enzyme'
 
@@ -36,7 +37,7 @@ describe('resolve', () => {
       const wrapper = mount(<FooBar/>)
       wrapper.html().should.be.exactly('<div></div>')
 
-      Promise.resolve().then(() => {
+      return delay().then(() => {
         wrapper.html().should.be.exactly('<div>Hello World!</div>')
       })
     })
