@@ -1,11 +1,5 @@
+import _ from 'lodash'
 import invariant from 'invariant'
-
-import dropRight from 'lodash/dropRight'
-import get from 'lodash/get'
-import isArray from 'lodash/isArray'
-import isFunction from 'lodash/isFunction'
-import last from 'lodash/last'
-import reduce from 'lodash/reduce'
 
 import {resolve} from 'react-resolver'
 import hoistStatics from 'hoist-non-react-statics'
@@ -43,10 +37,10 @@ const injectFalcor = (WrappedComponent) => {
 
 const reducePathSet = (r, pathSetOrFunction, prop) => {
   r[prop] = ({falcor, ...ownProps}) => {
-    const pathSet = isFunction(pathSetOrFunction) ? pathSetOrFunction(ownProps) : pathSetOrFunction
-    if (isArray(pathSet)) {
-      if (isArray(last(pathSet))) {
-        return falcor.get(pathSet).then((res) => get(res, ['json', ...dropRight(pathSet)]))
+    const pathSet = _.isFunction(pathSetOrFunction) ? pathSetOrFunction(ownProps) : pathSetOrFunction
+    if (_.isArray(pathSet)) {
+      if (_.isArray(_.last(pathSet))) {
+        return falcor.get(pathSet).then((res) => _.get(res, ['json', ..._.dropRight(pathSet)]))
       }
       return falcor.getValue(pathSet)
     }
@@ -57,7 +51,7 @@ const reducePathSet = (r, pathSetOrFunction, prop) => {
 
 export default function connect(pathSets) {
   return function wrapWithConnect(WrappedComponent) {
-    const asyncProps = reduce(pathSets, reducePathSet, {})
+    const asyncProps = _.reduce(pathSets, reducePathSet, {})
     return injectFalcor(resolve(asyncProps)(WrappedComponent))
   }
 }

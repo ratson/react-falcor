@@ -1,5 +1,5 @@
+import _ from 'lodash'
 import invariant from 'invariant'
-import noop from 'lodash/noop'
 
 import React, {PropTypes} from 'react'
 
@@ -10,7 +10,7 @@ class Provider extends React.Component {
     const {falcor} = props
     invariant(props, `"falcor" is not provided`)
 
-    const originalCallback = falcor._root.onChange || noop
+    const originalCallback = falcor._root.onChange || _.noop
     falcor._root.onChange = () => {
       originalCallback()
       this.forceUpdate()
