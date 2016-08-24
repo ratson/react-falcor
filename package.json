@@ -1,6 +1,6 @@
 {
   "name": "react-falcor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React binding for Falcor",
   "main": "lib/index.js",
   "scripts": {
