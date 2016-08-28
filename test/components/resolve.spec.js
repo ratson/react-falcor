@@ -5,12 +5,10 @@ import {mount, shallow} from 'enzyme'
 
 import {Provider, resolve} from '../../src'
 
+import Foo from '../fixtures/Foo'
 import model from '../fixtures/model'
 
 describe('resolve', () => {
-  const Foo = ({greeting}) => (
-    <div>{greeting}</div>
-  )
   const Bar = resolve((falcor) => falcor.getValue(['greeting']).then((greeting) => ({
     greeting,
   })))(Foo)
@@ -19,13 +17,6 @@ describe('resolve', () => {
       <Bar/>
     </Provider>
   )
-
-  describe('Foo', () => {
-    it('render greeting', () => {
-      const wrapper = shallow(<Foo greeting="hi"/>)
-      wrapper.html().should.be.exactly('<div>hi</div>')
-    })
-  })
 
   describe('FooBar', () => {
     it('render empty tag', () => {

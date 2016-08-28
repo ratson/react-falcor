@@ -5,25 +5,16 @@ import {mount, shallow} from 'enzyme'
 
 import {Provider, getValue} from '../../src'
 
+import Foo from '../fixtures/Foo'
 import model from '../fixtures/model'
 
 describe('getValue', () => {
-  const Foo = ({greeting}) => (
-    <div>{greeting}</div>
-  )
   const Bar = getValue({greeting: ['greeting']})(Foo)
   const FooBar = () => (
     <Provider falcor={model}>
       <Bar/>
     </Provider>
   )
-
-  describe('Foo', () => {
-    it('render greeting', () => {
-      const wrapper = shallow(<Foo greeting="hi"/>)
-      wrapper.html().should.be.exactly('<div>hi</div>')
-    })
-  })
 
   describe('FooBar', () => {
     it('render empty tag', () => {

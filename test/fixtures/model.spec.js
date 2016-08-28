@@ -1,3 +1,5 @@
+import 'should'
+
 import model from './model'
 
 describe('model', () => {

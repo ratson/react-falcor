@@ -4,20 +4,10 @@ import {shallow} from 'enzyme'
 
 import {Provider, falcorGetValue} from '../../src'
 
+import Foo from '../fixtures/Foo'
 import model from '../fixtures/model'
 
 describe('falcorGetValue', () => {
-  const Foo = ({greeting}) => (
-    <div>{greeting}</div>
-  )
-
-  describe('Foo', () => {
-    it('render greeting', () => {
-      const wrapper = shallow(<Foo greeting="hi"/>)
-      wrapper.html().should.be.exactly('<div>hi</div>')
-    })
-  })
-
   it('accept mapPathSetsToProps as object', () => {
     const Bar = falcorGetValue({greeting: ['greeting']})(Foo)
     const FooBar = () => (
