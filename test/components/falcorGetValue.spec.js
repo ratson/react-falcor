@@ -18,7 +18,7 @@ describe('falcorGetValue', () => {
     })
   })
 
-  describe('getValueToProps', () => {
+  it('accept mapPathSetsToProps as object', () => {
     const Bar = falcorGetValue({greeting: ['greeting']})(Foo)
     const FooBar = () => (
       <Provider falcor={model}>
@@ -26,23 +26,19 @@ describe('falcorGetValue', () => {
       </Provider>
     )
 
-    it('render greeting', () => {
-      const wrapper = shallow(<FooBar/>)
-      wrapper.html().should.be.exactly('<div>Hello World!</div>')
-    })
+    const wrapper = shallow(<FooBar/>)
+    wrapper.html().should.be.exactly('<div>Hello World!</div>')
   })
 
-  describe('mapGetValueToProps', () => {
-    const Bar = falcorGetValue(() => ({greeting: ['greeting']}))(Foo)
+  it('accept mapPathSetsToProps as function', () => {
+    const Bar = falcorGetValue(({path}) => ({greeting: [path]}))(Foo)
     const FooBar = () => (
       <Provider falcor={model}>
-        <Bar/>
+        <Bar path="greeting"/>
       </Provider>
     )
 
-    it('render greeting', () => {
-      const wrapper = shallow(<FooBar/>)
-      wrapper.html().should.be.exactly('<div>Hello World!</div>')
-    })
+    const wrapper = shallow(<FooBar/>)
+    wrapper.html().should.be.exactly('<div>Hello World!</div>')
   })
 })

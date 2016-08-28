@@ -3,7 +3,7 @@ import _ from 'lodash'
 import React, {PropTypes} from 'react'
 import hoistStatics from 'hoist-non-react-statics'
 
-export default (mapGetValueToProps, {pure = true} = {}) => {
+export default (mapPathSetsToProps, {pure = true} = {}) => {
   return (WrappedComponent) => {
     class Resolve extends React.Component {
       constructor(props, context) {
@@ -13,9 +13,9 @@ export default (mapGetValueToProps, {pure = true} = {}) => {
       }
 
       componentWillMount() {
-        const getValueToProps = _.isFunction(mapGetValueToProps) ? mapGetValueToProps(this.props) : mapGetValueToProps
+        const pathSetsToProps = _.isFunction(mapPathSetsToProps) ? mapPathSetsToProps(this.props) : mapPathSetsToProps
 
-        this.subscriptions = _.map(getValueToProps, (pathSet, propKey) => {
+        this.subscriptions = _.map(pathSetsToProps, (pathSet, propKey) => {
           return this.falcor.getValue(pathSet).subscribe((value) => {
             this.setState({
               [propKey]: value,
