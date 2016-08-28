@@ -3,7 +3,14 @@ import _ from 'lodash'
 import React, {PropTypes} from 'react'
 import hoistStatics from 'hoist-non-react-statics'
 
-export default (mapPathSetsToProps, {pure = true} = {}) => {
+function defaultMergeProps(state, ownProps) {
+  return {
+    ...ownProps,
+    ...state,
+  }
+}
+
+export default (mapPathSetsToProps, mergeProps = defaultMergeProps, {pure = true} = {}) => {
   return (WrappedComponent) => {
     class Resolve extends React.Component {
       constructor(props, context) {
@@ -34,7 +41,7 @@ export default (mapPathSetsToProps, {pure = true} = {}) => {
 
       render() {
         return (
-          <WrappedComponent {...this.state}/>
+          <WrappedComponent {...mergeProps(this.state)}/>
         )
       }
     }

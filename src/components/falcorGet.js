@@ -3,11 +3,14 @@ import _ from 'lodash'
 import React, {PropTypes} from 'react'
 import hoistStatics from 'hoist-non-react-statics'
 
-function defaultTransformResponseToProps(response) {
-  return response.json
+function defaultMergeProps(response, ownProps) {
+  return {
+    ...ownProps,
+    ...response.json,
+  }
 }
 
-export default (getPathSets, transformResponseToProps = defaultTransformResponseToProps, {pure = true} = {}) => {
+export default (getPathSets, mergeProps = defaultMergeProps, {pure = true} = {}) => {
   return (WrappedComponent) => {
     class Resolve extends React.Component {
       constructor(props, context) {
@@ -36,7 +39,7 @@ export default (getPathSets, transformResponseToProps = defaultTransformResponse
 
       render() {
         return (
-          <WrappedComponent {...transformResponseToProps(this.state.response)}/>
+          <WrappedComponent {...mergeProps(this.state.response, this.props)}/>
         )
       }
     }
