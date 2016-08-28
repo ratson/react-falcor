@@ -1,4 +1,5 @@
 export connect from './components/connect'
+export falcorGet from './components/falcorGet'
 export falcorGetValue from './components/falcorGetValue'
 export getValue from './components/getValue'
 export Provider from './components/Provider'
