@@ -3,10 +3,10 @@ import _ from 'lodash'
 import React, {PropTypes} from 'react'
 import hoistStatics from 'hoist-non-react-statics'
 
-function defaultMergeProps(response, ownProps) {
+function defaultMergeProps({json} = {}, ownProps) {
   return {
     ...ownProps,
-    ...response.json,
+    ...json,
   }
 }
 
@@ -16,6 +16,7 @@ export default (getPathSets, mergeProps = defaultMergeProps, {pure = true} = {})
       constructor(props, context) {
         super(props, context)
 
+        this.state = {}
         this.falcor = props.falcor || context.falcor
       }
 
