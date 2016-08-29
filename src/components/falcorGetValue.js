@@ -36,7 +36,9 @@ export default (mapPathSetsToProps, mergeProps = defaultMergeProps, {pure = true
       }
 
       componentWillUnmount() {
-        this.subscriptions.forEach(({dispose}) => dispose())
+        this.subscriptions.forEach((subscription) => {
+          subscription.dispose()
+        })
       }
 
       render() {
