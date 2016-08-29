@@ -42,6 +42,9 @@ export default (mapPathSetsToProps, mergeProps = defaultMergeProps, {pure = true
       }
 
       render() {
+        if (this.state === null) {
+          return null
+        }
         return (
           <WrappedComponent {...mergeProps(this.state)}/>
         )

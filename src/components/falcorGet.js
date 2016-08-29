@@ -16,7 +16,6 @@ export default (getPathSets, mergeProps = defaultMergeProps, {pure = true} = {})
       constructor(props, context) {
         super(props, context)
 
-        this.state = {}
         this.falcor = props.falcor || context.falcor
       }
 
@@ -39,6 +38,10 @@ export default (getPathSets, mergeProps = defaultMergeProps, {pure = true} = {})
       }
 
       render() {
+        // TODO provide option to override this
+        if (this.state === null) {
+          return null
+        }
         return (
           <WrappedComponent {...mergeProps(this.state.response, this.props)}/>
         )
