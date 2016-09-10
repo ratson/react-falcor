@@ -28,7 +28,7 @@ describe('falcorGet', () => {
     })
   })
 
-  it('accept getPathSets as array', () => {
+  it('accept passing single pathSet', () => {
     const Bar = falcorGet(['greeting'])(Foo)
     const FooBar = () => (
       <Provider falcor={model}>
@@ -40,8 +40,20 @@ describe('falcorGet', () => {
     wrapper.html().should.be.exactly('<div>Hello World!</div>')
   })
 
-  it('accept getPathSets as function', () => {
-    const Bar = falcorGet(({path}) => ([path]))(Foo)
+  it('accept array of pathSet', () => {
+    const Bar = falcorGet([['greeting']])(Foo)
+    const FooBar = () => (
+      <Provider falcor={model}>
+        <Bar/>
+      </Provider>
+    )
+
+    const wrapper = shallow(<FooBar/>)
+    wrapper.html().should.be.exactly('<div>Hello World!</div>')
+  })
+
+  it('accept function that returns array of pathSet', () => {
+    const Bar = falcorGet(({path}) => [[path]])(Foo)
     const FooBar = () => (
       <Provider falcor={model}>
         <Bar path="greeting"/>
@@ -53,9 +65,10 @@ describe('falcorGet', () => {
   })
 
   it('can transform to props', () => {
-    const Bar = falcorGet(['greeting'], ({json}) => {
+    const Bar = falcorGet(['todos[0].name', ['todos', 1, 'name']], ({json}) => {
+      json.todos[0].name.should.be.exactly('get milk from corner store')
       return {
-        greeting: json.greeting,
+        greeting: json.todos[1].name,
       }
     })(Foo)
     const FooBar = () => (
@@ -65,6 +78,6 @@ describe('falcorGet', () => {
     )
 
     const wrapper = shallow(<FooBar/>)
-    wrapper.html().should.be.exactly('<div>Hello World!</div>')
+    wrapper.html().should.be.exactly('<div>withdraw money from ATM</div>')
   })
 })

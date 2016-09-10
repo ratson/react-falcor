@@ -22,7 +22,7 @@ export default (getPathSets, mergeProps = defaultMergeProps, {pure = true} = {})
       componentWillMount() {
         const pathSets = _.isFunction(getPathSets) ? getPathSets(this.props) : getPathSets
 
-        this.subscription = this.falcor.get(pathSets).subscribe((response) => {
+        this.subscription = this.falcor.get(...pathSets).subscribe((response) => {
           this.setState({
             response,
           })
