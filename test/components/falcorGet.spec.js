@@ -1,8 +1,11 @@
 import 'should'
+import _ from 'lodash'
+import delay from 'timeout-as-promise'
 import rewire from 'rewire'
 
+import {mount} from 'enzyme'
+import falcor from 'falcor'
 import React from 'react'
-import {shallow} from 'enzyme'
 
 import {Provider, falcorGet} from '../../src'
 
@@ -36,7 +39,7 @@ describe('falcorGet', () => {
       </Provider>
     )
 
-    const wrapper = shallow(<FooBar/>)
+    const wrapper = mount(<FooBar/>)
     wrapper.html().should.be.exactly('<div>Hello World!</div>')
   })
 
@@ -48,7 +51,7 @@ describe('falcorGet', () => {
       </Provider>
     )
 
-    const wrapper = shallow(<FooBar/>)
+    const wrapper = mount(<FooBar/>)
     wrapper.html().should.be.exactly('<div>Hello World!</div>')
   })
 
@@ -60,7 +63,7 @@ describe('falcorGet', () => {
       </Provider>
     )
 
-    const wrapper = shallow(<FooBar/>)
+    const wrapper = mount(<FooBar/>)
     wrapper.html().should.be.exactly('<div>Hello World!</div>')
   })
 
@@ -77,7 +80,35 @@ describe('falcorGet', () => {
       </Provider>
     )
 
-    const wrapper = shallow(<FooBar/>)
+    const wrapper = mount(<FooBar/>)
     wrapper.html().should.be.exactly('<div>withdraw money from ATM</div>')
+    wrapper.unmount()
+  })
+
+  it('re-fetch on invalidate', () => {
+    const model = new falcor.Model({
+      cache: {
+        greeting: 'Hello World!',
+      },
+    })
+
+    const Bar = falcorGet(['greeting'])(Foo)
+    const FooBar = () => (
+      <Provider falcor={model}>
+        <Bar/>
+      </Provider>
+    )
+
+    const wrapper = mount(<FooBar/>)
+    wrapper.html().should.be.exactly('<div>Hello World!</div>')
+
+    return delay().then(() => {
+      const cache = model.getCache()
+      model.invalidate('greeting')
+      _.set(cache, 'greeting.value', 'Hi!')
+      model.setCache(cache)
+
+      wrapper.html().should.be.exactly('<div>Hi!</div>')
+    })
   })
 })

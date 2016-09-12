@@ -16,10 +16,35 @@ export default (getPathSets, mergeProps = defaultMergeProps, {pure = true} = {})
       constructor(props, context) {
         super(props, context)
 
+        this.clearCache()
         this.falcor = props.falcor || context.falcor
       }
 
       componentWillMount() {
+        this.subscribe()
+      }
+
+      shouldComponentUpdate(nextProps, nextState) {
+        if (this.version !== this.falcor.getVersion()) {
+          this.subscribe()
+          return true
+        }
+        return !pure || !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState)
+      }
+
+      componentWillUpdate() {
+        this.version = this.falcor.getVersion()
+        this.subscribe()
+      }
+
+      componentWillUnmount() {
+        this.tryUnsubscribe()
+        this.clearCache()
+      }
+
+      subscribe() {
+        this.tryUnsubscribe()
+
         const pathSets = _.isFunction(getPathSets) ? getPathSets(this.props) : getPathSets
 
         this.subscription = this.falcor.get(...pathSets).subscribe((response) => {
@@ -29,12 +54,16 @@ export default (getPathSets, mergeProps = defaultMergeProps, {pure = true} = {})
         })
       }
 
-      shouldComponentUpdate(nextProps, nextState) {
-        return !pure || !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState)
+      tryUnsubscribe() {
+        if (this.subscription) {
+          this.subscription.dispose()
+          this.subscription = null
+        }
       }
 
-      componentWillUnmount() {
-        this.subscription.dispose()
+      clearCache() {
+        this.falcor = null
+        this.version = null
       }
 
       render() {
