@@ -16,8 +16,10 @@ export default (getPathSets, mergeProps = defaultMergeProps, {pure = true} = {})
       constructor(props, context) {
         super(props, context)
 
-        this.clearCache()
-        this.falcor = props.falcor || context.falcor
+        this.eventEmitter = context.falcorEventEmitter
+        this.eventEmitter.on('change', this.onModelChange)
+
+        this.falcor = context.falcor
       }
 
       componentWillMount() {
@@ -26,7 +28,6 @@ export default (getPathSets, mergeProps = defaultMergeProps, {pure = true} = {})
 
       shouldComponentUpdate(nextProps, nextState) {
         if (this.version !== this.falcor.getVersion()) {
-          this.subscribe()
           return true
         }
         return !pure || !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState)
@@ -34,12 +35,14 @@ export default (getPathSets, mergeProps = defaultMergeProps, {pure = true} = {})
 
       componentWillUpdate() {
         this.version = this.falcor.getVersion()
-        this.subscribe()
       }
 
       componentWillUnmount() {
-        this.tryUnsubscribe()
-        this.clearCache()
+        this.cleanup()
+      }
+
+      onModelChange = () => {
+        this.subscribe()
       }
 
       subscribe() {
@@ -61,7 +64,11 @@ export default (getPathSets, mergeProps = defaultMergeProps, {pure = true} = {})
         }
       }
 
-      clearCache() {
+      cleanup() {
+        this.eventEmitter.removeListener('change', this.onModelChange)
+        this.eventEmitter = null
+
+        this.tryUnsubscribe()
         this.falcor = null
         this.version = null
       }
@@ -78,10 +85,8 @@ export default (getPathSets, mergeProps = defaultMergeProps, {pure = true} = {})
     }
 
     Resolve.contextTypes = {
-      falcor: PropTypes.object,
-    }
-    Resolve.propTypes = {
-      falcor: PropTypes.object,
+      falcor: PropTypes.object.isRequired,
+      falcorEventEmitter: PropTypes.object.isRequired,
     }
 
     return hoistStatics(Resolve, WrappedComponent)

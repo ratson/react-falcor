@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import EventEmitter from 'eventemitter3'
 import invariant from 'invariant'
 
 import React, {PropTypes} from 'react'
@@ -10,17 +11,32 @@ class Provider extends React.Component {
     const {falcor} = props
     invariant(props, `"falcor" is not provided`)
 
+    const eventEmitter = new EventEmitter()
+
     const originalCallback = falcor._root.onChange || _.noop
     falcor._root.onChange = () => {
       originalCallback()
-      this.forceUpdate()
+      eventEmitter.emit('change', falcor.getVersion())
     }
 
+    this.eventEmitter = eventEmitter
     this.falcor = falcor
   }
 
+  componentWillUnmount() {
+    this.cleanup()
+  }
+
   getChildContext() {
-    return {falcor: this.falcor}
+    return {
+      falcor: this.falcor,
+      falcorEventEmitter: this.eventEmitter,
+    }
+  }
+
+  cleanup() {
+    this.eventEmitter = null
+    this.falcor = null
   }
 
   render() {
@@ -35,6 +51,7 @@ Provider.propTypes = {
 }
 Provider.childContextTypes = {
   falcor: PropTypes.object.isRequired,
+  falcorEventEmitter: PropTypes.object.isRequired,
 }
 
 export default Provider
