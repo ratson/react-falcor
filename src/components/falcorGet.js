@@ -17,12 +17,12 @@ export default (getPathSets, mergeProps = defaultMergeProps, {pure = true} = {})
         super(props, context)
 
         this.eventEmitter = context.falcorEventEmitter
-        this.eventEmitter.on('change', this.onModelChange)
-
         this.falcor = context.falcor
       }
 
       componentWillMount() {
+        this.eventEmitter.on('change', this.onModelChange)
+
         this.subscribe()
       }
 

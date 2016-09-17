@@ -4,6 +4,7 @@ import delay from 'timeout-as-promise'
 import rewire from 'rewire'
 
 import {mount} from 'enzyme'
+import {renderToStaticMarkup} from 'react-dom/server'
 import falcor from 'falcor'
 import React from 'react'
 
@@ -110,5 +111,16 @@ describe('falcorGet', () => {
 
       wrapper.html().should.be.exactly('<div>Hi!</div>')
     })
+  })
+
+  it('should resolve values for server-side rendering', () => {
+    const Bar = falcorGet(['greeting'])(Foo)
+    const FooBar = () => (
+      <Provider falcor={model}>
+        <Bar/>
+      </Provider>
+    )
+    const html = renderToStaticMarkup(<FooBar/>)
+    html.should.be.exactly('<div>Hello World!</div>')
   })
 })
