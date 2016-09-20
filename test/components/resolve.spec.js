@@ -9,7 +9,7 @@ import Foo from '../fixtures/Foo'
 import model from '../fixtures/model'
 
 describe('resolve', () => {
-  const Bar = resolve((falcor) => falcor.getValue(['greeting']).then((greeting) => ({
+  const Bar = resolve(falcor => falcor.getValue(['greeting']).then(greeting => ({
     greeting,
   })))(Foo)
   const FooBar = () => (

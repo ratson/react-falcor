@@ -10,8 +10,8 @@ function defaultMergeProps(state, ownProps) {
   }
 }
 
-export default (mapPathSetsToProps, mergeProps = defaultMergeProps, {pure = true} = {}) => {
-  return (WrappedComponent) => {
+export default (mapPathSetsToProps, mergeProps = defaultMergeProps, {pure = true} = {}) => (
+  WrappedComponent => {
     class Resolve extends React.Component {
       constructor(props, context) {
         super(props, context)
@@ -22,13 +22,10 @@ export default (mapPathSetsToProps, mergeProps = defaultMergeProps, {pure = true
       componentWillMount() {
         const pathSetsToProps = _.isFunction(mapPathSetsToProps) ? mapPathSetsToProps(this.props) : mapPathSetsToProps
 
-        this.subscriptions = _.map(pathSetsToProps, (pathSet, propKey) => {
-          return this.falcor.getValue(pathSet).subscribe((value) => {
-            this.setState({
-              [propKey]: value,
-            })
-          })
-        })
+        this.subscriptions = _.map(
+          pathSetsToProps,
+          (pathSet, propKey) => this.falcor.getValue(pathSet).subscribe(
+            value => this.setState({[propKey]: value})))
       }
 
       shouldComponentUpdate(nextProps, nextState) {
@@ -36,7 +33,7 @@ export default (mapPathSetsToProps, mergeProps = defaultMergeProps, {pure = true
       }
 
       componentWillUnmount() {
-        this.subscriptions.forEach((subscription) => {
+        this.subscriptions.forEach(subscription => {
           subscription.dispose()
         })
       }
@@ -60,4 +57,4 @@ export default (mapPathSetsToProps, mergeProps = defaultMergeProps, {pure = true
 
     return hoistStatics(Resolve, WrappedComponent)
   }
-}
+)

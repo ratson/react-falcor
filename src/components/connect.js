@@ -9,7 +9,7 @@ function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component'
 }
 
-const injectFalcor = (WrappedComponent) => {
+const injectFalcor = WrappedComponent => {
   const displayName = `Falcor(${getDisplayName(WrappedComponent)})`
 
   const Connect = (props, context) => {
@@ -40,7 +40,7 @@ const reducePathSet = (r, pathSetOrFunction, prop) => {
     const pathSet = _.isFunction(pathSetOrFunction) ? pathSetOrFunction(ownProps) : pathSetOrFunction
     if (_.isArray(pathSet)) {
       if (_.isArray(_.last(pathSet))) {
-        return falcor.get(pathSet).then((res) => _.get(res, ['json', ..._.dropRight(pathSet)]))
+        return falcor.get(pathSet).then(res => _.get(res, ['json', ..._.dropRight(pathSet)]))
       }
       return falcor.getValue(pathSet)
     }

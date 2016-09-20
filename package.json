@@ -7,7 +7,10 @@
     "build": "babel src --out-dir lib",
     "clean": "rimraf lib dist coverage",
     "prepublish": "npm-run-all clean build",
-    "test": "csc && mocha"
+    "test": "mocha"
+  },
+  "peerDependencies": {
+    "react": "*"
   },
   "dependencies": {
     "babel-runtime": "^6.11.6",
@@ -27,7 +30,6 @@
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.14.0",
-    "csc": "0.1.0",
     "enzyme": "^2.4.1",
     "falcor": "^0.1.17",
     "jsdom": "^9.5.0",

@@ -18,7 +18,7 @@ function getInitialState() {
 }
 
 export default (mapFalcorToProps, {pure = true} = {}) => {
-  return (WrappedComponent) => {
+  return WrappedComponent => {
     class Resolve extends React.Component {
       constructor(props, context) {
         super(props, context)
@@ -45,7 +45,7 @@ export default (mapFalcorToProps, {pure = true} = {}) => {
       mapAsyncDataToProps(props = this.props) {
         const counter = ++this._counter
 
-        Promise.resolve(mapFalcorToProps(this.falcor, props)).then((nextProps) => {
+        Promise.resolve(mapFalcorToProps(this.falcor, props)).then(nextProps => {
           // resolve to nothing when cancelled or has pending resolve
           if (this._cancelPromise || counter !== this._counter) {
             return
