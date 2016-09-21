@@ -10,8 +10,8 @@ function defaultMergeProps({json} = {}, ownProps) {
   }
 }
 
-export default (getPathSets, mergeProps = defaultMergeProps, {pure = true} = {}) => {
-  return (WrappedComponent) => {
+export default (getPathSets, mergeProps = defaultMergeProps, {defer = true, pure = true} = {}) => (
+  WrappedComponent => {
     class Resolve extends React.Component {
       constructor(props, context) {
         super(props, context)
@@ -75,7 +75,7 @@ export default (getPathSets, mergeProps = defaultMergeProps, {pure = true} = {})
 
       render() {
         // TODO provide option to override this
-        if (this.state === null) {
+        if (defer && this.state === null) {
           return null
         }
         return (
@@ -91,4 +91,4 @@ export default (getPathSets, mergeProps = defaultMergeProps, {pure = true} = {})
 
     return hoistStatics(Resolve, WrappedComponent)
   }
-}
+)
