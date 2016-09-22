@@ -10,14 +10,20 @@ function defaultMergeProps({json} = {}, ownProps) {
   }
 }
 
-export default (getPathSets, mergeProps = defaultMergeProps, {defer = true, pure = true} = {}) => (
-  WrappedComponent => {
+export default (getPathSets, mergeProps = defaultMergeProps, {defer = true, pure = true, loadingComponent} = {}) => {
+  const Loading = loadingComponent
+  return WrappedComponent => {
     class Resolve extends React.Component {
       constructor(props, context) {
         super(props, context)
 
         this.eventEmitter = context.falcorEventEmitter
         this.falcor = context.falcor
+
+        this.state = {
+          loading: true,
+          response: null,
+        }
       }
 
       componentWillMount() {
@@ -52,6 +58,7 @@ export default (getPathSets, mergeProps = defaultMergeProps, {defer = true, pure
 
         this.subscription = this.falcor.get(...pathSets).subscribe((response) => {
           this.setState({
+            loading: false,
             response,
           })
         })
@@ -74,9 +81,8 @@ export default (getPathSets, mergeProps = defaultMergeProps, {defer = true, pure
       }
 
       render() {
-        // TODO provide option to override this
-        if (defer && this.state === null) {
-          return null
+        if (defer && this.state.loading) {
+          return Loading ? <Loading {...this.props} /> : null
         }
         return (
           <WrappedComponent {...mergeProps(this.state.response, this.props)}/>
@@ -91,4 +97,4 @@ export default (getPathSets, mergeProps = defaultMergeProps, {defer = true, pure
 
     return hoistStatics(Resolve, WrappedComponent)
   }
-)
+}
