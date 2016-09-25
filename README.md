@@ -1,6 +1,6 @@
 # react-falcor
 
-React binding for Falcor.
+[React](https://github.com/facebook/react) binding for [Falcor](https://github.com/Netflix/falcor).
 
 ## Installation
 
@@ -14,7 +14,7 @@ npm install react-falcor --save
 import { Model } from 'falcor'
 import HttpDataSource from 'falcor-http-datasource'
 
-import { Provider, getValue } from 'react-falcor'
+import { Provider, falcorGet } from 'react-falcor'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
@@ -22,9 +22,9 @@ const falcor = new Model({
   source: new HttpDataSource('/model.json'),
 })
 
-const App = getValue({
-  greeting: ['greeting'],
-})(({greeting}) => {
+const App = falcorGet(
+  ['greeting']
+))(({greeting}) => {
   return (
     <p>{greeting}</p>
   )
