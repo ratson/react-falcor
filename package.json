@@ -19,7 +19,8 @@
     "invariant": "^2.2.1",
     "lodash": "^4.15.0",
     "react-resolver": "^3.0.3",
-    "recompose": "^0.20.2"
+    "recompose": "^0.20.2",
+    "warning": "^3.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.14.0",

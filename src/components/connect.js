@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import invariant from 'invariant'
+import warning from 'warning'
 
 import {resolve} from 'react-resolver'
 import hoistStatics from 'hoist-non-react-statics'
@@ -50,6 +51,7 @@ const reducePathSet = (r, pathSetOrFunction, prop) => {
 }
 
 export default function connect(pathSets) {
+  warning(false, '[react-falcor] `connect` is going to be removed, use `falcorGet` instead')
   return function wrapWithConnect(WrappedComponent) {
     const asyncProps = _.reduce(pathSets, reducePathSet, {})
     return injectFalcor(resolve(asyncProps)(WrappedComponent))

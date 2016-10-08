@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import warning from 'warning'
 
 import React, {PropTypes} from 'react'
 import hoistStatics from 'hoist-non-react-statics'
