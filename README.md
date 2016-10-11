@@ -37,3 +37,8 @@ ReactDOM.render(
   document.getElementById('container')
 )
 ```
+
+## Similar Effort
+
+* [falcor-react](https://github.com/giovannicalo/falcor-react)
+* [atreyu](https://github.com/ekosz/atreyu) has a similar design to this library. For some reason, the author did not publish it to npm.
