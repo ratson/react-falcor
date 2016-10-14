@@ -29,7 +29,7 @@ export default (getPathSets, mergeProps = defaultMergeProps, {defer = true, pure
       componentWillMount() {
         this.eventEmitter.on('change', this.onModelChange)
 
-        this.subscribe()
+        this.subscribe(this.props)
       }
 
       shouldComponentUpdate(nextProps, nextState) {
@@ -39,8 +39,14 @@ export default (getPathSets, mergeProps = defaultMergeProps, {defer = true, pure
         return !pure || !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState)
       }
 
-      componentWillUpdate() {
+      componentWillUpdate(nextProps, nextState) {
         this.version = this.falcor.getVersion()
+      }
+
+      componentWillReceiveProps(nextProps) {
+        if (!pure || !_.isEqual(nextProps, this.props)) {
+          this.subscribe(nextProps)
+        }
       }
 
       componentWillUnmount() {
@@ -48,13 +54,13 @@ export default (getPathSets, mergeProps = defaultMergeProps, {defer = true, pure
       }
 
       onModelChange = () => {
-        this.subscribe()
+        this.subscribe(this.props)
       }
 
-      subscribe() {
+      subscribe(props) {
         this.tryUnsubscribe()
 
-        const pathSets = _.isFunction(getPathSets) ? getPathSets(this.props) : getPathSets
+        const pathSets = _.isFunction(getPathSets) ? getPathSets(props) : getPathSets
 
         this.subscription = this.falcor.get(...pathSets).subscribe((response) => {
           this.setState({

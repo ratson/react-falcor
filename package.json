@@ -34,7 +34,7 @@
     "enzyme": "^2.4.1",
     "falcor": "^0.1.17",
     "jsdom": "^9.6.0",
-    "mocha": "^3.1.1",
+    "mocha": "^3.1.2",
     "npm-run-all": "^3.1.0",
     "react": "^15.3.2",
     "react-addons-test-utils": "^15.3.2",

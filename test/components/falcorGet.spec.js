@@ -113,6 +113,34 @@ describe('falcorGet', () => {
     })
   })
 
+  it('should re-render with updated props', () => {
+    const model = new falcor.Model({
+      cache: {
+        greeting: 'Hello World!',
+        greeting2: 'Hi World!',
+      },
+    })
+
+    const Bar = falcorGet(
+      ({path}) => [[path]],
+      (res, {path}) => {
+        return {
+          greeting: res.json[path],
+        }
+      }
+    )(Foo)
+    const FooBar = ({path}) => (
+      <Provider falcor={model}>
+        <Bar path={path}/>
+      </Provider>
+    )
+    const wrapper = mount(<FooBar path="greeting"/>)
+    wrapper.html().should.be.exactly('<div>Hello World!</div>')
+
+    wrapper.setProps({ path: 'greeting2' })
+    wrapper.html().should.be.exactly('<div>Hi World!</div>')
+  })
+
   it('should resolve values for server-side rendering', () => {
     const Bar = falcorGet(['greeting'])(Foo)
     const FooBar = () => (
