@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "babel src --out-dir lib",
+    "dev": "babel src --out-dir lib --watch",
     "clean": "rimraf lib dist coverage",
     "prepublish": "npm-run-all clean build",
     "test": "mocha"
@@ -30,6 +31,7 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
     "babel-register": "^6.18.0",
+    "chokidar": "^1.6.1",
     "enzyme": "^2.6.0",
     "falcor": "^0.1.17",
     "jsdom": "^9.8.3",
