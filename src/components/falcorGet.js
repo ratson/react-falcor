@@ -63,6 +63,14 @@ export default (getPathSets, mergeProps = defaultMergeProps, {defer = true, pure
         const pathSets = _.isFunction(getPathSets) ? getPathSets(props) : getPathSets
 
         this.subscription = this.falcor.get(...pathSets).subscribe((response) => {
+          // HACK avoid server-side rendering setState() no-op
+          // this is happened when calling renderToString(),
+          // this callback is run after component is rendered,
+          // which triggering the warning
+          if (this.updater && this.updater.transaction && this.updater.transaction._isInTransaction === false) {
+            return
+          }
+
           this.setState({
             loading: false,
             response,
