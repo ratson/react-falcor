@@ -3,14 +3,21 @@ import _ from 'lodash'
 import React, {PropTypes} from 'react'
 import hoistStatics from 'hoist-non-react-statics'
 
-function defaultMergeProps({json} = {}, ownProps) {
+function defaultMergeProps(response, ownProps) {
+  const {json} = response || {}
   return {
     ...ownProps,
     ...json,
   }
 }
 
-export default (getPathSets, mergeProps = defaultMergeProps, {defer = true, pure = true, loadingComponent} = {}) => {
+export default (getPathSets, mergeProps, {defer, pure = true, loadingComponent} = {}) => {
+  if (!mergeProps) {
+    mergeProps = defaultMergeProps
+  }
+  if (typeof defer === 'undefined') {
+    defer = loadingComponent ? true : false
+  }
   const Loading = loadingComponent
   return WrappedComponent => {
     class Resolve extends React.Component {
@@ -27,9 +34,17 @@ export default (getPathSets, mergeProps = defaultMergeProps, {defer = true, pure
       }
 
       componentWillMount() {
-        this.eventEmitter.on('change', this.onModelChange)
+        if (!defer) {
+          this.eventEmitter.on('change', this.onModelChange)
+          this.subscribe(this.props)
+        }
+      }
 
-        this.subscribe(this.props)
+      componentDidMount() {
+        if (defer) {
+          this.eventEmitter.on('change', this.onModelChange)
+          this.subscribe(this.props)
+        }
       }
 
       shouldComponentUpdate(nextProps, nextState) {
@@ -54,6 +69,11 @@ export default (getPathSets, mergeProps = defaultMergeProps, {defer = true, pure
       }
 
       onModelChange = () => {
+        this.subscribe(this.props)
+      }
+
+      listenAndSubscribe() {
+        this.eventEmitter.on('change', this.onModelChange)
         this.subscribe(this.props)
       }
 
@@ -95,7 +115,7 @@ export default (getPathSets, mergeProps = defaultMergeProps, {defer = true, pure
       }
 
       render() {
-        if (defer && this.state.loading) {
+        if (this.state.loading) {
           return Loading ? <Loading {...this.props} /> : null
         }
         return (

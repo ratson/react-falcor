@@ -3,7 +3,7 @@ import _ from 'lodash'
 import delay from 'timeout-as-promise'
 import rewire from 'rewire'
 
-import {mount} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 import {renderToStaticMarkup} from 'react-dom/server'
 import falcor from 'falcor'
 import React from 'react'
@@ -150,5 +150,59 @@ describe('falcorGet', () => {
     )
     const html = renderToStaticMarkup(<FooBar/>)
     html.should.be.exactly('<div>Hello World!</div>')
+  })
+
+  describe('defer option', () => {
+    it('should render when defer = false', () => {
+      const Bar = falcorGet(['greeting'], null, {defer: false})(Foo)
+      const FooBar = () => (
+        <Provider falcor={model}>
+          <Bar/>
+        </Provider>
+      )
+
+      shallow(<FooBar/>).html().should.be.exactly('<div>Hello World!</div>')
+      mount(<FooBar/>).html().should.be.exactly('<div>Hello World!</div>')
+    })
+
+    it('should shallow render nothing when defer = true', () => {
+      const Bar = falcorGet(['greeting'], null, {defer: true})(Foo)
+      const FooBar = () => (
+        <Provider falcor={model}>
+          <Bar/>
+        </Provider>
+      )
+
+      shallow(<FooBar/>).html().should.be.exactly('')
+      mount(<FooBar/>).html().should.be.exactly('<div>Hello World!</div>')
+    })
+  })
+
+  describe('loading option', () => {
+    it('can set loading component', () => {
+      const Loading = () => <div>Loading</div>
+      const Bar = falcorGet(['greeting'], null, {loadingComponent: Loading})(Foo)
+      const FooBar = () => (
+        <Provider falcor={model}>
+          <Bar/>
+        </Provider>
+      )
+
+      shallow(<FooBar/>).html().should.be.exactly('<div>Loading</div>')
+      mount(<FooBar/>).html().should.be.exactly('<div>Hello World!</div>')
+    })
+
+    it('have no effect when defer = false', () => {
+      const Loading = () => <div>Loading</div>
+      const Bar = falcorGet(['greeting'], null, {defer: false, loadingComponent: Loading})(Foo)
+      const FooBar = () => (
+        <Provider falcor={model}>
+          <Bar/>
+        </Provider>
+      )
+
+      shallow(<FooBar/>).html().should.be.exactly('<div>Hello World!</div>')
+      mount(<FooBar/>).html().should.be.exactly('<div>Hello World!</div>')
+    })
   })
 })
