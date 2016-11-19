@@ -11,12 +11,9 @@ function defaultMergeProps(response, ownProps) {
   }
 }
 
-export default (getPathSets, mergeProps, {defer, pure = true, loadingComponent} = {}) => {
+export default (getPathSets, mergeProps, {defer = false, pure = true, loadingComponent} = {}) => {
   if (!mergeProps) {
     mergeProps = defaultMergeProps
-  }
-  if (typeof defer === 'undefined') {
-    defer = loadingComponent ? true : false
   }
   const Loading = loadingComponent
   return WrappedComponent => {

@@ -181,7 +181,7 @@ describe('falcorGet', () => {
   describe('loading option', () => {
     it('can set loading component', () => {
       const Loading = () => <div>Loading</div>
-      const Bar = falcorGet(['greeting'], null, {loadingComponent: Loading})(Foo)
+      const Bar = falcorGet(['greeting'], null, {defer: true, loadingComponent: Loading})(Foo)
       const FooBar = () => (
         <Provider falcor={model}>
           <Bar/>
