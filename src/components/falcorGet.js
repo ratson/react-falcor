@@ -32,15 +32,13 @@ export default (getPathSets, mergeProps, {defer = false, pure = true, loadingCom
 
       componentWillMount() {
         if (!defer) {
-          this.eventEmitter.on('change', this.onModelChange)
-          this.subscribe(this.props)
+          this.listenAndSubscribe()
         }
       }
 
       componentDidMount() {
         if (defer) {
-          this.eventEmitter.on('change', this.onModelChange)
-          this.subscribe(this.props)
+          this.listenAndSubscribe()
         }
       }
 
