@@ -24,8 +24,8 @@ export default (getPathSets, mergeProps, {defer, pure = true, loadingComponent} 
       constructor(props, context) {
         super(props, context)
 
-        this.eventEmitter = context.falcorEventEmitter
-        this.falcor = context.falcor
+        this.eventEmitter = context.falcor.eventEmitter
+        this.falcor = context.falcor.model
 
         this.state = {
           loading: true,
@@ -126,7 +126,6 @@ export default (getPathSets, mergeProps, {defer, pure = true, loadingComponent} 
 
     Resolve.contextTypes = {
       falcor: PropTypes.object.isRequired,
-      falcorEventEmitter: PropTypes.object.isRequired,
     }
 
     return hoistStatics(Resolve, WrappedComponent)

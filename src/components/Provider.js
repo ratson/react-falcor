@@ -19,8 +19,10 @@ class Provider extends React.Component {
       eventEmitter.emit('change', falcor.getVersion())
     }
 
-    this.eventEmitter = eventEmitter
-    this.falcor = falcor
+    this.falcor = {
+      model: falcor,
+      eventEmitter,
+    }
   }
 
   componentWillUnmount() {
@@ -30,12 +32,10 @@ class Provider extends React.Component {
   getChildContext() {
     return {
       falcor: this.falcor,
-      falcorEventEmitter: this.eventEmitter,
     }
   }
 
   cleanup() {
-    this.eventEmitter = null
     this.falcor = null
   }
 
@@ -50,8 +50,10 @@ Provider.propTypes = {
   children: PropTypes.element.isRequired,
 }
 Provider.childContextTypes = {
-  falcor: PropTypes.object.isRequired,
-  falcorEventEmitter: PropTypes.object.isRequired,
+  falcor: PropTypes.shape({
+    model: PropTypes.object.isRequired,
+    eventEmitter: PropTypes.object.isRequired,
+  }).isRequired,
 }
 
 export default Provider

@@ -24,7 +24,7 @@ export default (mapFalcorToProps, {pure = true} = {}) => {
       constructor(props, context) {
         super(props, context)
 
-        this.falcor = props.falcor || context.falcor
+        this.falcor = props.falcor || context.falcor.model
         this.state = getInitialState(props)
 
         this._counter = 0

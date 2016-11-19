@@ -16,7 +16,7 @@ export default (mapPathSetsToProps, mergeProps = defaultMergeProps, {pure = true
       constructor(props, context) {
         super(props, context)
 
-        this.falcor = props.falcor || context.falcor
+        this.falcor = props.falcor || context.falcor.model
       }
 
       componentWillMount() {
