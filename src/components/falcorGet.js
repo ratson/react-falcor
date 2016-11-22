@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import warning from 'warning'
 
 import React, {PropTypes} from 'react'
 import hoistStatics from 'hoist-non-react-statics'
@@ -72,11 +73,16 @@ export default (getPathSets, mergeProps, {defer = false, pure = true, loadingCom
         this.subscribe(this.props)
       }
 
+      computePathSets(props) {
+        const pathSets = _.isFunction(getPathSets) ? getPathSets(props) : getPathSets
+        warning(typeof pathSets !== 'undefined', '"pathSets" is undefined')
+        return pathSets || []
+      }
+
       subscribe(props) {
         this.tryUnsubscribe()
 
-        const pathSets = _.isFunction(getPathSets) ? getPathSets(props) : getPathSets
-
+        const pathSets = this.computePathSets(props)
         this.subscription = this.falcor.get(...pathSets).subscribe((response) => {
           // HACK avoid server-side rendering setState() no-op
           // this is happened when calling renderToString(),

@@ -1,4 +1,4 @@
-import 'should'
+import should from 'should'
 import _ from 'lodash'
 import delay from 'timeout-as-promise'
 import rewire from 'rewire'
@@ -66,6 +66,18 @@ describe('falcorGet', () => {
 
     const wrapper = mount(<FooBar/>)
     wrapper.html().should.be.exactly('<div>Hello World!</div>')
+  })
+
+  it('return null for undefined pathSet', () => {
+    const Bar = falcorGet()(Foo)
+    const FooBar = () => (
+      <Provider falcor={model}>
+        <Bar/>
+      </Provider>
+    )
+
+    const wrapper = mount(<FooBar/>)
+    should(wrapper.html()).be.null()
   })
 
   it('can transform to props', () => {
