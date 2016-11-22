@@ -98,6 +98,18 @@ describe('falcorGet', () => {
     wrapper.unmount()
   })
 
+  it('render nothing when mergeProps() return falsy value', () => {
+    const Bar = falcorGet(['greeting'], () => null)(Foo)
+    const FooBar = () => (
+      <Provider falcor={model}>
+        <Bar/>
+      </Provider>
+    )
+
+    const wrapper = mount(<FooBar/>)
+    should(wrapper.html()).be.null()
+  })
+
   it('re-fetch on invalidate', () => {
     const model = new falcor.Model({
       cache: {
