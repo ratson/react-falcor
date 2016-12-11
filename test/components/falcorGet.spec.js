@@ -1,31 +1,29 @@
-import should from 'should'
 import _ from 'lodash'
 import delay from 'timeout-as-promise'
-import rewire from 'rewire'
 
 import {shallow, mount} from 'enzyme'
 import {renderToStaticMarkup} from 'react-dom/server'
 import falcor from 'falcor'
 import React from 'react'
 
+jest.mock('warning')
+
 import {Provider, falcorGet} from '../../src'
+import {defaultMergeProps} from '../../src/components/falcorGet'
 
 import Foo from '../fixtures/Foo'
 import model from '../fixtures/model'
-
-const falcorGetModule = rewire('../../src/components/falcorGet')
-const defaultMergeProps = falcorGetModule.__get__('defaultMergeProps')
 
 describe('falcorGet', () => {
   describe('defaultMergeProps', () => {
     it('handle undefined response', () => {
       const props = {a: 1}
-      defaultMergeProps(undefined, props).should.be.eql(props)
+      expect(defaultMergeProps(undefined, props)).toEqual(props)
     })
 
     it('merge props', () => {
       const props = {a: 1, b: 2}
-      defaultMergeProps({json: {a: 2}}, props).should.be.eql({
+      expect(defaultMergeProps({json: {a: 2}}, props)).toEqual({
         a: 2,
         b: 2,
       })
@@ -41,7 +39,7 @@ describe('falcorGet', () => {
     )
 
     const wrapper = mount(<FooBar/>)
-    wrapper.html().should.be.exactly('<div>Hello World!</div>')
+    expect(wrapper.html()).toBe('<div>Hello World!</div>')
   })
 
   it('accept array of pathSet', () => {
@@ -53,7 +51,7 @@ describe('falcorGet', () => {
     )
 
     const wrapper = mount(<FooBar/>)
-    wrapper.html().should.be.exactly('<div>Hello World!</div>')
+    expect(wrapper.html()).toBe('<div>Hello World!</div>')
   })
 
   it('accept function that returns array of pathSet', () => {
@@ -65,7 +63,7 @@ describe('falcorGet', () => {
     )
 
     const wrapper = mount(<FooBar/>)
-    wrapper.html().should.be.exactly('<div>Hello World!</div>')
+    expect(wrapper.html()).toBe('<div>Hello World!</div>')
   })
 
   it('return null for undefined pathSet', () => {
@@ -77,12 +75,12 @@ describe('falcorGet', () => {
     )
 
     const wrapper = mount(<FooBar/>)
-    should(wrapper.html()).be.null()
+    expect(wrapper.html()).toBeNull()
   })
 
   it('can transform to props', () => {
     const Bar = falcorGet(['todos[0].name', ['todos', 1, 'name']], ({json}) => {
-      json.todos[0].name.should.be.exactly('get milk from corner store')
+      expect(json.todos[0].name).toBe('get milk from corner store')
       return {
         greeting: json.todos[1].name,
       }
@@ -94,7 +92,7 @@ describe('falcorGet', () => {
     )
 
     const wrapper = mount(<FooBar/>)
-    wrapper.html().should.be.exactly('<div>withdraw money from ATM</div>')
+    expect(wrapper.html()).toBe('<div>withdraw money from ATM</div>')
     wrapper.unmount()
   })
 
@@ -107,7 +105,7 @@ describe('falcorGet', () => {
     )
 
     const wrapper = mount(<FooBar/>)
-    should(wrapper.html()).be.null()
+    expect(wrapper.html()).toBeNull()
   })
 
   it('re-fetch on invalidate', () => {
@@ -125,7 +123,7 @@ describe('falcorGet', () => {
     )
 
     const wrapper = mount(<FooBar/>)
-    wrapper.html().should.be.exactly('<div>Hello World!</div>')
+    expect(wrapper.html()).toBe('<div>Hello World!</div>')
 
     return delay().then(() => {
       const cache = model.getCache()
@@ -133,7 +131,7 @@ describe('falcorGet', () => {
       _.set(cache, 'greeting.value', 'Hi!')
       model.setCache(cache)
 
-      wrapper.html().should.be.exactly('<div>Hi!</div>')
+      expect(wrapper.html()).toBe('<div>Hi!</div>')
     })
   })
 
@@ -157,10 +155,10 @@ describe('falcorGet', () => {
       </Provider>
     )
     const wrapper = mount(<FooBar path="greeting"/>)
-    wrapper.html().should.be.exactly('<div>Hello World!</div>')
+    expect(wrapper.html()).toBe('<div>Hello World!</div>')
 
     wrapper.setProps({path: 'greeting2'})
-    wrapper.html().should.be.exactly('<div>Hi World!</div>')
+    expect(wrapper.html()).toBe('<div>Hi World!</div>')
   })
 
   it('should resolve values for server-side rendering', () => {
@@ -171,7 +169,7 @@ describe('falcorGet', () => {
       </Provider>
     )
     const html = renderToStaticMarkup(<FooBar/>)
-    html.should.be.exactly('<div>Hello World!</div>')
+    expect(html).toBe('<div>Hello World!</div>')
   })
 
   describe('defer option', () => {
@@ -183,8 +181,8 @@ describe('falcorGet', () => {
         </Provider>
       )
 
-      shallow(<FooBar/>).html().should.be.exactly('<div>Hello World!</div>')
-      mount(<FooBar/>).html().should.be.exactly('<div>Hello World!</div>')
+      expect(shallow(<FooBar/>).html()).toBe('<div>Hello World!</div>')
+      expect(mount(<FooBar/>).html()).toBe('<div>Hello World!</div>')
     })
 
     it('should shallow render nothing when defer = true', () => {
@@ -195,8 +193,8 @@ describe('falcorGet', () => {
         </Provider>
       )
 
-      shallow(<FooBar/>).html().should.be.exactly('')
-      mount(<FooBar/>).html().should.be.exactly('<div>Hello World!</div>')
+      expect(shallow(<FooBar/>).html()).toBe('')
+      expect(mount(<FooBar/>).html()).toBe('<div>Hello World!</div>')
     })
   })
 
@@ -210,8 +208,8 @@ describe('falcorGet', () => {
         </Provider>
       )
 
-      shallow(<FooBar/>).html().should.be.exactly('<div>Loading</div>')
-      mount(<FooBar/>).html().should.be.exactly('<div>Hello World!</div>')
+      expect(shallow(<FooBar/>).html()).toBe('<div>Loading</div>')
+      expect(mount(<FooBar/>).html()).toBe('<div>Hello World!</div>')
     })
 
     it('have no effect when defer = false', () => {
@@ -223,8 +221,8 @@ describe('falcorGet', () => {
         </Provider>
       )
 
-      shallow(<FooBar/>).html().should.be.exactly('<div>Hello World!</div>')
-      mount(<FooBar/>).html().should.be.exactly('<div>Hello World!</div>')
+      expect(shallow(<FooBar/>).html()).toBe('<div>Hello World!</div>')
+      expect(mount(<FooBar/>).html()).toBe('<div>Hello World!</div>')
     })
   })
 })

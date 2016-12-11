@@ -1,0 +1,5 @@
+exports[`Foo render greeting 1`] = `
+<div>
+  hi
+</div>
+`;

@@ -4,7 +4,7 @@ import warning from 'warning'
 import React, {PropTypes} from 'react'
 import hoistStatics from 'hoist-non-react-statics'
 
-function defaultMergeProps(response, ownProps) {
+export function defaultMergeProps(response, ownProps) {
   const {json} = response || {}
   return {
     ...ownProps,

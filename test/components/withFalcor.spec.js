@@ -1,5 +1,3 @@
-import 'should'
-
 import React from 'react'
 import {shallow} from 'enzyme'
 
@@ -18,6 +16,6 @@ describe('withFalcor', () => {
     )
 
     const wrapper = shallow(<FooBar/>)
-    wrapper.prop('falcor').should.be.exactly(model)
+    expect(wrapper.prop('falcor')).toBe(model)
   })
 })

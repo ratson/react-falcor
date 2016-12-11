@@ -14,6 +14,8 @@ const model = new falcor.Model({
       },
     ],
   },
+  onChange() {
+  },
 })
 
 export default model
