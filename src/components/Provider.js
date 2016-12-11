@@ -9,7 +9,7 @@ class Provider extends React.Component {
     super(props, context)
 
     const {falcor} = props
-    invariant(props, `"falcor" is not provided`)
+    invariant(props, '"falcor" is not provided')
 
     const eventEmitter = new EventEmitter()
 

@@ -17,7 +17,7 @@ export default (getPathSets, mergeProps, {defer = false, pure = true, loadingCom
     mergeProps = defaultMergeProps
   }
   const Loading = loadingComponent
-  return WrappedComponent => {
+  return (WrappedComponent) => {
     class Resolve extends React.Component {
       constructor(props, context) {
         super(props, context)
@@ -117,7 +117,7 @@ export default (getPathSets, mergeProps, {defer = false, pure = true, loadingCom
 
       render() {
         if (this.state.loading) {
-          return Loading ? <Loading {...this.props} /> : null
+          return Loading ? <Loading {...this.props}/> : null
         }
         const props = mergeProps(this.state.response, this.props)
         if (!props) {

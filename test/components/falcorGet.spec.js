@@ -147,11 +147,9 @@ describe('falcorGet', () => {
 
     const Bar = falcorGet(
       ({path}) => [[path]],
-      (res, {path}) => {
-        return {
-          greeting: res.json[path],
-        }
-      }
+      (res, {path}) => ({
+        greeting: res.json[path],
+      }),
     )(Foo)
     const FooBar = ({path}) => (
       <Provider falcor={model}>
@@ -161,7 +159,7 @@ describe('falcorGet', () => {
     const wrapper = mount(<FooBar path="greeting"/>)
     wrapper.html().should.be.exactly('<div>Hello World!</div>')
 
-    wrapper.setProps({ path: 'greeting2' })
+    wrapper.setProps({path: 'greeting2'})
     wrapper.html().should.be.exactly('<div>Hi World!</div>')
   })
 
