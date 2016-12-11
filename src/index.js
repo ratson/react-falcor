@@ -1,6 +1,3 @@
 export falcorGet from './components/falcorGet'
-export falcorGetValue from './components/falcorGetValue'
-export getValue from './components/getValue'
 export Provider from './components/Provider'
-export resolve from './components/resolve'
 export withFalcor from './components/withFalcor'
