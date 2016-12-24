@@ -3,6 +3,7 @@ import warning from 'warning'
 
 import React, {PropTypes} from 'react'
 import hoistStatics from 'hoist-non-react-statics'
+import shallowEqual from 'recompose/shallowEqual'
 
 export function defaultMergeProps(response, ownProps) {
   const {json} = response || {}
@@ -51,7 +52,7 @@ export default (getPathSets, mergeProps, {defer = false, pure = true, loadingCom
       }
 
       componentWillReceiveProps(nextProps) {
-        if (!pure || !_.isEqual(nextProps, this.props)) {
+        if (!pure || !shallowEqual(nextProps, this.props)) {
           this.subscribe(nextProps)
         }
       }
@@ -60,7 +61,7 @@ export default (getPathSets, mergeProps, {defer = false, pure = true, loadingCom
         if (this.version !== this.falcor.getVersion()) {
           return true
         }
-        return !pure || !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState)
+        return !pure || !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState)
       }
 
       componentWillUpdate() {
