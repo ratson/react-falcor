@@ -20,7 +20,7 @@
     "eventemitter3": "^2.0.2",
     "hoist-non-react-statics": "^1.2.0",
     "invariant": "^2.2.2",
-    "lodash": "^4.17.2",
+    "lodash": "^4.17.3",
     "recompose": "^0.21.2",
     "warning": "^3.0.0"
   },

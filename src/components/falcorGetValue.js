@@ -5,26 +5,14 @@ import React, {PropTypes} from 'react'
 import hoistStatics from 'hoist-non-react-statics'
 import shallowEqual from 'recompose/shallowEqual'
 
-export function defaultMergeProps(response, ownProps) {
-  const {json} = response || {}
-  return {
-    ...ownProps,
-    ...json,
-  }
+function computePathSetToProps(props, mapPathSetToProps) {
+  const pathSetToProps = _.isFunction(mapPathSetToProps) ? mapPathSetToProps(props) : mapPathSetToProps
+  warning(typeof pathSetToProps !== 'undefined', '"pathSetToProps" is undefined')
+  return pathSetToProps || {}
 }
 
-function computePathSets(props, getPathSets) {
-  const pathSets = _.isFunction(getPathSets) ? getPathSets(props) : getPathSets
-  warning(typeof pathSets !== 'undefined', '"pathSets" is undefined')
-  return pathSets || []
-}
-
-export default (getPathSets, mergeProps, {defer = false, pure = true, loadingComponent} = {}) => {
-  if (!mergeProps) {
-    mergeProps = defaultMergeProps
-  }
+export default (mapPathSetToProps, {defer = false, pure = true, loadingComponent} = {}) => {
   const Loading = loadingComponent
-
   return (WrappedComponent) => {
     class Resolve extends React.Component {
       constructor(props, context) {
@@ -35,7 +23,6 @@ export default (getPathSets, mergeProps, {defer = false, pure = true, loadingCom
 
         this.state = {
           loading: true,
-          response: null,
         }
       }
 
@@ -84,28 +71,42 @@ export default (getPathSets, mergeProps, {defer = false, pure = true, loadingCom
       subscribe(props) {
         this.tryUnsubscribe()
 
-        const pathSets = computePathSets(props, getPathSets)
-        this.subscription = this.falcor.get(...pathSets).subscribe((response) => {
-          // HACK avoid server-side rendering setState() no-op
-          // this is happened when calling renderToString(),
-          // this callback is run after component is rendered,
-          // which triggering the warning
-          if (this.updater && this.updater.transaction && this.updater.transaction._isInTransaction === false) {
-            return
-          }
+        const pathSetToProps = computePathSetToProps(props, mapPathSetToProps)
+        const propKeys = Object.keys(pathSetToProps)
+        this.subscriptions = propKeys
+        .map((prop) => {
+          const pathSet = pathSetToProps[prop]
+          return this.falcor.getValue(pathSet).subscribe((value) => {
+            this.resolved[prop] = value
+            this.resolvedCount += 1
 
-          this.setState({
-            loading: false,
-            response,
+            if (this.resolvedCount === propKeys.length) {
+              // HACK avoid server-side rendering setState() no-op
+              // this is happened when calling renderToString(),
+              // this callback is run after component is rendered,
+              // which triggering the warning
+              if (this.updater && this.updater.transaction && this.updater.transaction._isInTransaction === false) {
+                return
+              }
+
+              this.setState({
+                loading: false,
+              })
+            }
           })
         })
       }
 
       tryUnsubscribe() {
-        if (this.subscription) {
-          this.subscription.dispose()
-          this.subscription = null
+        if (!this.subscriptions) {
+          this.subscriptions = []
         }
+        if (this.subscriptions.length > 0) {
+          this.subscriptions.forEach(x => x.dispose())
+          this.subscriptions = []
+        }
+        this.resolved = {}
+        this.resolvedCount = 0
       }
 
       cleanup() {
@@ -121,12 +122,8 @@ export default (getPathSets, mergeProps, {defer = false, pure = true, loadingCom
         if (this.state.loading) {
           return Loading ? <Loading {...this.props}/> : null
         }
-        const props = mergeProps(this.state.response, this.props)
-        if (!props) {
-          return null
-        }
         return (
-          <WrappedComponent {...props}/>
+          <WrappedComponent {...this.props} {...this.resolved}/>
         )
       }
     }
