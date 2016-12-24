@@ -17,6 +17,13 @@ export default (getPathSets, mergeProps, {defer = false, pure = true, loadingCom
     mergeProps = defaultMergeProps
   }
   const Loading = loadingComponent
+
+  function computePathSets(props) {
+    const pathSets = _.isFunction(getPathSets) ? getPathSets(props) : getPathSets
+    warning(typeof pathSets !== 'undefined', '"pathSets" is undefined')
+    return pathSets || []
+  }
+
   return (WrappedComponent) => {
     class Resolve extends React.Component {
       constructor(props, context) {
@@ -43,6 +50,12 @@ export default (getPathSets, mergeProps, {defer = false, pure = true, loadingCom
         }
       }
 
+      componentWillReceiveProps(nextProps) {
+        if (!pure || !_.isEqual(nextProps, this.props)) {
+          this.subscribe(nextProps)
+        }
+      }
+
       shouldComponentUpdate(nextProps, nextState) {
         if (this.version !== this.falcor.getVersion()) {
           return true
@@ -50,14 +63,8 @@ export default (getPathSets, mergeProps, {defer = false, pure = true, loadingCom
         return !pure || !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState)
       }
 
-      componentWillUpdate(nextProps, nextState) {
+      componentWillUpdate() {
         this.version = this.falcor.getVersion()
-      }
-
-      componentWillReceiveProps(nextProps) {
-        if (!pure || !_.isEqual(nextProps, this.props)) {
-          this.subscribe(nextProps)
-        }
       }
 
       componentWillUnmount() {
@@ -73,16 +80,10 @@ export default (getPathSets, mergeProps, {defer = false, pure = true, loadingCom
         this.subscribe(this.props)
       }
 
-      computePathSets(props) {
-        const pathSets = _.isFunction(getPathSets) ? getPathSets(props) : getPathSets
-        warning(typeof pathSets !== 'undefined', '"pathSets" is undefined')
-        return pathSets || []
-      }
-
       subscribe(props) {
         this.tryUnsubscribe()
 
-        const pathSets = this.computePathSets(props)
+        const pathSets = computePathSets(props)
         this.subscription = this.falcor.get(...pathSets).subscribe((response) => {
           // HACK avoid server-side rendering setState() no-op
           // this is happened when calling renderToString(),

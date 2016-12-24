@@ -25,14 +25,14 @@ class Provider extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    this.cleanup()
-  }
-
   getChildContext() {
     return {
       falcor: this.falcor,
     }
+  }
+
+  componentWillUnmount() {
+    this.cleanup()
   }
 
   cleanup() {
@@ -46,7 +46,11 @@ class Provider extends React.Component {
 }
 
 Provider.propTypes = {
-  falcor: PropTypes.object.isRequired,
+  falcor: PropTypes.shape({
+    _root: PropTypes.shape({
+      onChange: PropTypes.func,
+    }),
+  }).isRequired,
   children: PropTypes.element.isRequired,
 }
 Provider.childContextTypes = {
