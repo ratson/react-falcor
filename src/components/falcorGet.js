@@ -84,6 +84,9 @@ export default (getPathSets, mergeProps, {defer = false, pure = true, loadingCom
       }
 
       subscribe(props) {
+        if (this.falcor === null) {
+          return
+        }
         this.tryUnsubscribe()
 
         const pathSets = computePathSets(props, getPathSets)

@@ -71,6 +71,9 @@ export default (mapPathSetToProps, {defer = false, pure = true, loadingComponent
       }
 
       subscribe(props) {
+        if (this.falcor === null) {
+          return
+        }
         this.tryUnsubscribe()
 
         const pathSetToProps = computePathSetToProps(props, mapPathSetToProps)
