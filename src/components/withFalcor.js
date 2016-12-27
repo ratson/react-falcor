@@ -1,16 +1,19 @@
-import {PropTypes} from 'react'
-import compose from 'recompose/compose'
-import getContext from 'recompose/getContext'
-import withProps from 'recompose/withProps'
+import React, {PropTypes} from 'react'
+import getDisplayName from 'recompose/getDisplayName'
 
-export default (mapFalcorToProps) => {
-  const funcs = [
-    getContext({
-      falcor: PropTypes.object,
-    }),
-  ]
-  if (mapFalcorToProps) {
-    funcs.push(withProps(mapFalcorToProps))
+export default ({prop = 'falcor'} = {}) => (WrappedComponent) => {
+  const WithFalcor = (props, context) => (
+    <WrappedComponent
+      {...props}
+      {...{[prop]: context.falcor}}
+    />
+  )
+
+  WithFalcor.displayName = `withFalcor(${getDisplayName(WrappedComponent)})`
+
+  WithFalcor.contextTypes = {
+    falcor: PropTypes.object,
   }
-  return compose(...funcs)
+
+  return WithFalcor
 }
