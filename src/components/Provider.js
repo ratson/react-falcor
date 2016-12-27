@@ -4,6 +4,8 @@ import invariant from 'invariant'
 
 import React, {PropTypes} from 'react'
 
+import falcorShape from '../utils/falcorShape'
+
 class Provider extends React.Component {
   constructor(props, context) {
     super(props, context)
@@ -49,15 +51,12 @@ Provider.propTypes = {
   falcor: PropTypes.shape({
     _root: PropTypes.shape({
       onChange: PropTypes.func,
-    }),
+    }).isRequired,
   }).isRequired,
   children: PropTypes.element.isRequired,
 }
 Provider.childContextTypes = {
-  falcor: PropTypes.shape({
-    model: PropTypes.object.isRequired,
-    eventEmitter: PropTypes.object.isRequired,
-  }).isRequired,
+  falcor: falcorShape.isRequired,
 }
 
 export default Provider

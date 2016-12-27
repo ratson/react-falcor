@@ -1,9 +1,11 @@
 import _ from 'lodash'
 import warning from 'warning'
 
-import React, {PropTypes} from 'react'
+import React from 'react'
 import hoistStatics from 'hoist-non-react-statics'
 import shallowEqual from 'recompose/shallowEqual'
+
+import falcorShape from '../utils/falcorShape'
 
 function computePathSetToProps(props, mapPathSetToProps) {
   const pathSetToProps = _.isFunction(mapPathSetToProps) ? mapPathSetToProps(props) : mapPathSetToProps
@@ -129,7 +131,7 @@ export default (mapPathSetToProps, {defer = false, pure = true, loadingComponent
     }
 
     Resolve.contextTypes = {
-      falcor: PropTypes.object.isRequired,
+      falcor: falcorShape.isRequired,
     }
 
     return hoistStatics(Resolve, WrappedComponent)

@@ -1,5 +1,7 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
 import getDisplayName from 'recompose/getDisplayName'
+
+import falcorShape from '../utils/falcorShape'
 
 export default ({prop = 'falcor'} = {}) => (WrappedComponent) => {
   const WithFalcor = (props, context) => (
@@ -12,7 +14,7 @@ export default ({prop = 'falcor'} = {}) => (WrappedComponent) => {
   WithFalcor.displayName = `withFalcor(${getDisplayName(WrappedComponent)})`
 
   WithFalcor.contextTypes = {
-    falcor: PropTypes.object,
+    falcor: falcorShape,
   }
 
   return WithFalcor
