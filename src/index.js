@@ -1,4 +1,5 @@
 export falcorGet from './components/falcorGet'
 export falcorGetValue from './components/falcorGetValue'
+export injectFalcorModel from './components/injectFalcorModel'
 export Provider from './components/Provider'
 export withFalcor from './components/withFalcor'
