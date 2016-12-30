@@ -10,16 +10,16 @@ describe('withFalcor', () => {
   it('render wrapped component with `falcor` prop', () => {
     const Mock = jest.fn(({falcor}) => {
       expect(falcor.model).toBe(model)
-      return <Foo/>
+      return <Foo />
     })
     const Bar = withFalcor()(Mock)
     const FooBar = () => (
       <Provider falcor={model}>
-        <Bar/>
+        <Bar />
       </Provider>
     )
 
-    const wrapper = mount(<FooBar/>)
+    const wrapper = mount(<FooBar />)
     expect(Mock).toBeCalled()
     expect(wrapper.find(Foo).length).toBe(1)
   })
@@ -28,18 +28,18 @@ describe('withFalcor', () => {
     const Mock = jest.fn(({awesome, falcor}) => {
       expect(falcor).toBeUndefined()
       expect(awesome.model).toBe(model)
-      return <Foo/>
+      return <Foo />
     })
     const Bar = withFalcor({
       prop: 'awesome',
     })(Mock)
     const FooBar = () => (
       <Provider falcor={model}>
-        <Bar/>
+        <Bar />
       </Provider>
     )
 
-    const wrapper = mount(<FooBar/>)
+    const wrapper = mount(<FooBar />)
     expect(Mock).toBeCalled()
     expect(wrapper.find(Foo).length).toBe(1)
   })

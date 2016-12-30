@@ -34,11 +34,11 @@ describe('falcorGet', () => {
     const Bar = falcorGet(['greeting'])(Foo)
     const FooBar = () => (
       <Provider falcor={model}>
-        <Bar/>
+        <Bar />
       </Provider>
     )
 
-    const wrapper = mount(<FooBar/>)
+    const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBe('<div>Hello World!</div>')
   })
 
@@ -46,11 +46,11 @@ describe('falcorGet', () => {
     const Bar = falcorGet([['greeting']])(Foo)
     const FooBar = () => (
       <Provider falcor={model}>
-        <Bar/>
+        <Bar />
       </Provider>
     )
 
-    const wrapper = mount(<FooBar/>)
+    const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBe('<div>Hello World!</div>')
   })
 
@@ -58,11 +58,11 @@ describe('falcorGet', () => {
     const Bar = falcorGet(({path}) => [[path]])(Foo)
     const FooBar = () => (
       <Provider falcor={model}>
-        <Bar path="greeting"/>
+        <Bar path="greeting" />
       </Provider>
     )
 
-    const wrapper = mount(<FooBar/>)
+    const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBe('<div>Hello World!</div>')
   })
 
@@ -70,11 +70,11 @@ describe('falcorGet', () => {
     const Bar = falcorGet()(Foo)
     const FooBar = () => (
       <Provider falcor={model}>
-        <Bar/>
+        <Bar />
       </Provider>
     )
 
-    const wrapper = mount(<FooBar/>)
+    const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBeNull()
   })
 
@@ -87,11 +87,11 @@ describe('falcorGet', () => {
     })(Foo)
     const FooBar = () => (
       <Provider falcor={model}>
-        <Bar/>
+        <Bar />
       </Provider>
     )
 
-    const wrapper = mount(<FooBar/>)
+    const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBe('<div>withdraw money from ATM</div>')
     wrapper.unmount()
   })
@@ -100,11 +100,11 @@ describe('falcorGet', () => {
     const Bar = falcorGet(['greeting'], () => null)(Foo)
     const FooBar = () => (
       <Provider falcor={model}>
-        <Bar/>
+        <Bar />
       </Provider>
     )
 
-    const wrapper = mount(<FooBar/>)
+    const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBeNull()
   })
 
@@ -118,11 +118,11 @@ describe('falcorGet', () => {
     const Bar = falcorGet(['greeting'])(Foo)
     const FooBar = () => (
       <Provider falcor={model}>
-        <Bar/>
+        <Bar />
       </Provider>
     )
 
-    const wrapper = mount(<FooBar/>)
+    const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBe('<div>Hello World!</div>')
 
     return delay().then(() => {
@@ -151,10 +151,10 @@ describe('falcorGet', () => {
     )(Foo)
     const FooBar = ({path}) => (
       <Provider falcor={model}>
-        <Bar path={path}/>
+        <Bar path={path} />
       </Provider>
     )
-    const wrapper = mount(<FooBar path="greeting"/>)
+    const wrapper = mount(<FooBar path="greeting" />)
     expect(wrapper.html()).toBe('<div>Hello World!</div>')
 
     wrapper.setProps({path: 'greeting2'})
@@ -165,10 +165,10 @@ describe('falcorGet', () => {
     const Bar = falcorGet(['greeting'])(Foo)
     const FooBar = () => (
       <Provider falcor={model}>
-        <Bar/>
+        <Bar />
       </Provider>
     )
-    const html = renderToStaticMarkup(<FooBar/>)
+    const html = renderToStaticMarkup(<FooBar />)
     expect(html).toBe('<div>Hello World!</div>')
   })
 
@@ -177,24 +177,24 @@ describe('falcorGet', () => {
       const Bar = falcorGet(['greeting'], null, {defer: false})(Foo)
       const FooBar = () => (
         <Provider falcor={model}>
-          <Bar/>
+          <Bar />
         </Provider>
       )
 
-      expect(shallow(<FooBar/>).html()).toBe('<div>Hello World!</div>')
-      expect(mount(<FooBar/>).html()).toBe('<div>Hello World!</div>')
+      expect(shallow(<FooBar />).html()).toBe('<div>Hello World!</div>')
+      expect(mount(<FooBar />).html()).toBe('<div>Hello World!</div>')
     })
 
     it('should shallow render nothing when defer = true', () => {
       const Bar = falcorGet(['greeting'], null, {defer: true})(Foo)
       const FooBar = () => (
         <Provider falcor={model}>
-          <Bar/>
+          <Bar />
         </Provider>
       )
 
-      expect(shallow(<FooBar/>).html()).toBe('')
-      expect(mount(<FooBar/>).html()).toBe('<div>Hello World!</div>')
+      expect(shallow(<FooBar />).html()).toBe('')
+      expect(mount(<FooBar />).html()).toBe('<div>Hello World!</div>')
     })
   })
 
@@ -204,12 +204,12 @@ describe('falcorGet', () => {
       const Bar = falcorGet(['greeting'], null, {defer: true, loadingComponent: Loading})(Foo)
       const FooBar = () => (
         <Provider falcor={model}>
-          <Bar/>
+          <Bar />
         </Provider>
       )
 
-      expect(shallow(<FooBar/>).html()).toBe('<div>Loading</div>')
-      expect(mount(<FooBar/>).html()).toBe('<div>Hello World!</div>')
+      expect(shallow(<FooBar />).html()).toBe('<div>Loading</div>')
+      expect(mount(<FooBar />).html()).toBe('<div>Hello World!</div>')
     })
 
     it('have no effect when defer = false', () => {
@@ -217,12 +217,12 @@ describe('falcorGet', () => {
       const Bar = falcorGet(['greeting'], null, {defer: false, loadingComponent: Loading})(Foo)
       const FooBar = () => (
         <Provider falcor={model}>
-          <Bar/>
+          <Bar />
         </Provider>
       )
 
-      expect(shallow(<FooBar/>).html()).toBe('<div>Hello World!</div>')
-      expect(mount(<FooBar/>).html()).toBe('<div>Hello World!</div>')
+      expect(shallow(<FooBar />).html()).toBe('<div>Hello World!</div>')
+      expect(mount(<FooBar />).html()).toBe('<div>Hello World!</div>')
     })
   })
 })

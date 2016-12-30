@@ -5,7 +5,7 @@ import Foo from './Foo'
 
 describe('Foo', () => {
   it('render greeting', () => {
-    const component = renderer.create(<Foo greeting="hi"/>)
+    const component = renderer.create(<Foo greeting="hi" />)
     const tree = component.toJSON()
     expect(tree).toMatchSnapshot()
   })

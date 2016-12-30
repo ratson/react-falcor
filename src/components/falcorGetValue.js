@@ -125,10 +125,10 @@ export default (mapPathSetToProps, {defer = false, pure = true, loadingComponent
 
       render() {
         if (this.state.loading) {
-          return Loading ? <Loading {...this.props}/> : null
+          return Loading ? <Loading {...this.props} /> : null
         }
         return (
-          <WrappedComponent {...this.props} {...this.resolved}/>
+          <WrappedComponent {...this.props} {...this.resolved} />
         )
       }
     }

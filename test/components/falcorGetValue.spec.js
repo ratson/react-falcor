@@ -11,11 +11,11 @@ describe('falcorGetValue', () => {
     const Bar = falcorGetValue({greeting: ['greeting']})(Foo)
     const FooBar = () => (
       <Provider falcor={model}>
-        <Bar/>
+        <Bar />
       </Provider>
     )
 
-    const wrapper = shallow(<FooBar/>)
+    const wrapper = shallow(<FooBar />)
     expect(wrapper.html()).toBe('<div>Hello World!</div>')
   })
 
@@ -23,11 +23,11 @@ describe('falcorGetValue', () => {
     const Bar = falcorGetValue(({path}) => ({greeting: [path]}))(Foo)
     const FooBar = () => (
       <Provider falcor={model}>
-        <Bar path="greeting"/>
+        <Bar path="greeting" />
       </Provider>
     )
 
-    const wrapper = shallow(<FooBar/>)
+    const wrapper = shallow(<FooBar />)
     expect(wrapper.html()).toBe('<div>Hello World!</div>')
   })
 })

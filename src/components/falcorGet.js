@@ -124,14 +124,14 @@ export default (getPathSets, mergeProps, {defer = false, pure = true, loadingCom
 
       render() {
         if (this.state.loading) {
-          return Loading ? <Loading {...this.props}/> : null
+          return Loading ? <Loading {...this.props} /> : null
         }
         const props = mergeProps(this.state.response, this.props)
         if (!props) {
           return null
         }
         return (
-          <WrappedComponent {...props}/>
+          <WrappedComponent {...props} />
         )
       }
     }
