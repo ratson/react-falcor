@@ -20,7 +20,7 @@
     "eventemitter3": "^2.0.2",
     "hoist-non-react-statics": "^1.2.0",
     "invariant": "^2.2.2",
-    "lodash": "^4.17.3",
+    "lodash": "^4.17.4",
     "recompose": "^0.21.2",
     "warning": "^3.0.0"
   },
@@ -50,7 +50,7 @@
     "eslint-plugin-react": "^6.8.0",
     "falcor": "^0.1.17",
     "jest": "^18.1.0",
-    "npm-run-all": "^3.1.2",
+    "npm-run-all": "^4.0.0",
     "react": "^15.4.1",
     "react-addons-test-utils": "^15.4.1",
     "react-dom": "^15.4.1",

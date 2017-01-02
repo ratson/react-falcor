@@ -19,6 +19,9 @@ export function defaultMergeProps(response, ownProps) {
 function computePathSets(props, getPathSets) {
   const pathSets = _.isFunction(getPathSets) ? getPathSets(props) : getPathSets
   warning(typeof pathSets !== 'undefined', '"pathSets" is undefined')
+  if (pathSets === null) {
+    return null
+  }
   return pathSets || []
 }
 
@@ -47,6 +50,12 @@ function createHandler(getPathSets, mergeProps) {
     },
     subscribe(falcor, props, setState) {
       const pathSets = computePathSets(props, getPathSets)
+      if (pathSets === null) {
+        setState({
+          loading: false,
+        })
+        return
+      }
       subscription = falcor.get(...pathSets).subscribe((response) => {
         setState({
           loading: false,

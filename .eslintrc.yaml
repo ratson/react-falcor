@@ -3,5 +3,4 @@ extends:
   - concise-esnext
   - concise-react
 rules:
-  object-curly-spacing: off
   react/jsx-filename-extension: off

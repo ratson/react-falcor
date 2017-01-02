@@ -78,6 +78,18 @@ describe('falcorGet', () => {
     expect(wrapper.html()).toBeNull()
   })
 
+  it('allow null pathSet to render', () => {
+    const Bar = falcorGet(null)(Foo)
+    const FooBar = () => (
+      <Provider falcor={model}>
+        <Bar greeting="Hi!" />
+      </Provider>
+    )
+
+    const wrapper = mount(<FooBar />)
+    expect(wrapper.html()).toBe('<div>Hi!</div>')
+  })
+
   it('can transform to props', () => {
     const Bar = falcorGet(['todos[0].name', ['todos', 1, 'name']], ({json}) => {
       expect(json.todos[0].name).toBe('get milk from corner store')
