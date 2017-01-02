@@ -1,5 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
+import {renderToStaticMarkup} from 'react-dom/server'
 
 import {Provider, falcorGetValue} from '../../src'
 
@@ -29,5 +30,16 @@ describe('falcorGetValue', () => {
 
     const wrapper = shallow(<FooBar />)
     expect(wrapper.html()).toBe('<div>Hello World!</div>')
+  })
+
+  it('should resolve values for server-side rendering', () => {
+    const Bar = falcorGetValue({greeting: ['greeting']})(Foo)
+    const FooBar = () => (
+      <Provider falcor={model}>
+        <Bar />
+      </Provider>
+    )
+    const html = renderToStaticMarkup(<FooBar />)
+    expect(html).toBe('<div>Hello World!</div>')
   })
 })

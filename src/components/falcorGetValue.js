@@ -44,6 +44,8 @@ function createHandler(mapPathSetToProps) {
         const pathSet = pathSetToProps[prop]
         return falcor.getValue(pathSet).subscribe((value) => {
           resolved[prop] = value
+        }, () => {
+        }, () => {
           resolvedCount += 1
 
           if (resolvedCount === propKeys.length) {
