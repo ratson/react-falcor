@@ -8,7 +8,12 @@ const defaultState = {
   response: null,
 }
 
+const NO_RESPONSE = {}
+
 export function defaultMergeProps(response, ownProps) {
+  if (response === NO_RESPONSE) {
+    return null
+  }
   const {json} = response || {}
   return {
     ...ownProps,
@@ -56,11 +61,21 @@ function createHandler(getPathSets, mergeProps) {
         })
         return
       }
+      let hasResponse = false
       subscription = falcor.get(...pathSets).subscribe((response) => {
+        hasResponse = true
         setState({
           loading: false,
           response,
         })
+      }, () => {
+      }, () => {
+        if (!hasResponse) {
+          setState({
+            loading: false,
+            response: NO_RESPONSE,
+          })
+        }
       })
     },
     unsubscribe,

@@ -13,6 +13,7 @@ import {defaultMergeProps} from '../../src/components/falcorGet'
 
 import Foo from '../fixtures/Foo'
 import model from '../fixtures/model'
+import routerModel from '../fixtures/router-model'
 
 describe('falcorGet', () => {
   describe('defaultMergeProps', () => {
@@ -116,6 +117,28 @@ describe('falcorGet', () => {
       </Provider>
     )
 
+    const wrapper = mount(<FooBar />)
+    expect(wrapper.html()).toBeNull()
+  })
+
+  it.only('can handle undefined value', () => {
+    const Bar = falcorGet(['undefined', 'nested', 'value'])(Foo)
+    const FooBar = () => (
+      <Provider falcor={routerModel}>
+        <Bar />
+      </Provider>
+    )
+    const wrapper = mount(<FooBar />)
+    expect(wrapper.html()).toBeNull()
+  })
+
+  it('can handle null value', () => {
+    const Bar = falcorGet(['null'])(Foo)
+    const FooBar = () => (
+      <Provider falcor={routerModel}>
+        <Bar />
+      </Provider>
+    )
     const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBeNull()
   })
