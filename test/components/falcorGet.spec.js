@@ -31,6 +31,11 @@ describe('falcorGet', () => {
     })
   })
 
+  it('set displayName', () => {
+    const Bar = falcorGet(['greeting'])(Foo)
+    expect(Bar.displayName).toBe('falcorGet(Foo)')
+  })
+
   it('accept passing single pathSet', () => {
     const Bar = falcorGet(['greeting'])(Foo)
     const FooBar = () => (
@@ -121,7 +126,7 @@ describe('falcorGet', () => {
     expect(wrapper.html()).toBeNull()
   })
 
-  it.only('can handle undefined value', () => {
+  it('can handle undefined value', () => {
     const Bar = falcorGet(['undefined', 'nested', 'value'])(Foo)
     const FooBar = () => (
       <Provider falcor={routerModel}>

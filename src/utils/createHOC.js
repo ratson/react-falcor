@@ -1,14 +1,22 @@
 import React from 'react'
 import hoistStatics from 'hoist-non-react-statics'
+import getComponentName from 'recompose/getDisplayName'
 import shallowEqual from 'recompose/shallowEqual'
 
 import falcorShape from './falcorShape'
 
-export default function createHOC(createHandler, {defer = false, pure = true, loadingComponent} = {}, ...args) {
+export default function createHOC(createHandler, {
+  defer = false,
+  pure = true,
+  loadingComponent,
+  getDisplayName = name => `Resolve(${name})`,
+} = {}, ...args) {
   const Loading = loadingComponent
 
   return (WrappedComponent) => {
     class Resolve extends React.Component {
+      static displayName = getDisplayName(getComponentName(WrappedComponent))
+
       constructor(props, context) {
         super(props, context)
 

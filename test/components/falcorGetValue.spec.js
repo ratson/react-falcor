@@ -8,6 +8,11 @@ import Foo from '../fixtures/Foo'
 import model from '../fixtures/model'
 
 describe('falcorGetValue', () => {
+  it('set displayName', () => {
+    const Bar = falcorGetValue(['greeting'])(Foo)
+    expect(Bar.displayName).toBe('falcorGetValue(Foo)')
+  })
+
   it('accept mapPathSetsToProps as object', () => {
     const Bar = falcorGetValue({greeting: ['greeting']})(Foo)
     const FooBar = () => (

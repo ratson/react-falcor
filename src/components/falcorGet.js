@@ -82,4 +82,7 @@ function createHandler(getPathSets, mergeProps) {
   }
 }
 
-export default (getPathSets, mergeProps, opts) => createHOC(createHandler, opts, getPathSets, mergeProps)
+export default (getPathSets, mergeProps, opts) => createHOC(createHandler, {
+  getDisplayName: name => `falcorGet(${name})`,
+  ...opts,
+}, getPathSets, mergeProps)

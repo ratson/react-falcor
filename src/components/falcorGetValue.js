@@ -60,4 +60,7 @@ function createHandler(mapPathSetToProps) {
   }
 }
 
-export default (mapPathSetToProps, opts) => createHOC(createHandler, opts, mapPathSetToProps)
+export default (mapPathSetToProps, opts) => createHOC(createHandler, {
+  getDisplayName: name => `falcorGetValue(${name})`,
+  ...opts,
+}, mapPathSetToProps)
