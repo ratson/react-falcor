@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import delay from 'timeout-as-promise'
+import EventEmitter from 'eventemitter3'
 
 import {shallow, mount} from 'enzyme'
 import {renderToStaticMarkup} from 'react-dom/server'
@@ -210,6 +211,42 @@ describe('falcorGet', () => {
     )
     const html = renderToStaticMarkup(<FooBar />)
     expect(html).toBe('<div>Hello World!</div>')
+  })
+
+  it('should reset loading state when props change', () => {
+    const model = new falcor.Model({
+      cache: {
+        greeting: 'Hello World!',
+        greeting2: 'Hi World!',
+      },
+    })
+    const Bar = falcorGet(
+      ({path}) => [[path]],
+      (res, {path}) => ({
+        greeting: res.json[path],
+      }),
+    )(Foo)
+    const setState = Bar.prototype.setState = jest.fn(Bar.prototype.setState)
+    const wrapper = shallow(<Bar path="greeting" />, {
+      context: {
+        falcor: {
+          eventEmitter: new EventEmitter(),
+          model,
+        },
+      },
+    })
+    expect(setState).toHaveBeenCalledTimes(1)
+    expect(wrapper.state('loading')).toBe(false)
+    expect(wrapper.find(Foo).length).toBe(1)
+    expect(wrapper.find(Foo).prop('greeting')).toBe('Hello World!')
+
+    wrapper.setProps({path: 'greeting2'})
+    expect(setState).toHaveBeenCalledTimes(3)
+    expect(setState.mock.calls).toEqual([
+      [{loading: false, response: expect.any(Object)}],
+      [{loading: true}, expect.any(Function)],
+      [{loading: false, response: expect.any(Object)}],
+    ])
   })
 
   describe('defer option', () => {

@@ -41,7 +41,9 @@ export default function createHOC(createHandler, {
 
       componentWillReceiveProps(nextProps) {
         if (!pure || !shallowEqual(nextProps, this.props)) {
-          this.subscribe(nextProps)
+          this.setState({loading: true}, () => {
+            this.subscribe(nextProps)
+          })
         }
       }
 
