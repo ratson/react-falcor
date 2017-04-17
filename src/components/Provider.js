@@ -2,7 +2,8 @@ import _ from 'lodash'
 import EventEmitter from 'eventemitter3'
 import invariant from 'invariant'
 
-import React, {PropTypes} from 'react'
+import React from 'react'
+import {PropTypes} from 'prop-types'
 
 import falcorShape from '../utils/falcorShape'
 
