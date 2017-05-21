@@ -38,6 +38,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "cross-env": "^4.0.0",
     "del-cli": "^1.0.0",
+    "delay": "^2.0.0",
     "enzyme": "^2.8.2",
     "eslint": "^3.19.0",
     "eslint-config-concise": "^0.6.1",
@@ -58,8 +59,7 @@
     "react": "^15.5.4",
     "react-addons-test-utils": "^15.5.1",
     "react-dom": "^15.5.4",
-    "react-test-renderer": "^15.5.4",
-    "timeout-as-promise": "^1.0.0"
+    "react-test-renderer": "^15.5.4"
   },
   "repository": "ratson/react-falcor",
   "license": "MIT",

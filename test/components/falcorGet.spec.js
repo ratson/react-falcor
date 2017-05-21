@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import delay from 'timeout-as-promise'
+import delay from 'delay'
 import EventEmitter from 'eventemitter3'
 
 import {shallow, mount} from 'enzyme'
@@ -39,11 +39,10 @@ describe('falcorGet', () => {
 
   it('accept passing single pathSet', () => {
     const Bar = falcorGet(['greeting'])(Foo)
-    const FooBar = () => (
-      <Provider falcor={model}>
+    const FooBar = () =>
+      (<Provider falcor={model}>
         <Bar />
-      </Provider>
-    )
+      </Provider>)
 
     const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBe('<div>Hello World!</div>')
@@ -51,11 +50,10 @@ describe('falcorGet', () => {
 
   it('accept array of pathSet', () => {
     const Bar = falcorGet([['greeting']])(Foo)
-    const FooBar = () => (
-      <Provider falcor={model}>
+    const FooBar = () =>
+      (<Provider falcor={model}>
         <Bar />
-      </Provider>
-    )
+      </Provider>)
 
     const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBe('<div>Hello World!</div>')
@@ -63,11 +61,10 @@ describe('falcorGet', () => {
 
   it('accept function that returns array of pathSet', () => {
     const Bar = falcorGet(({path}) => [[path]])(Foo)
-    const FooBar = () => (
-      <Provider falcor={model}>
+    const FooBar = () =>
+      (<Provider falcor={model}>
         <Bar path="greeting" />
-      </Provider>
-    )
+      </Provider>)
 
     const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBe('<div>Hello World!</div>')
@@ -75,11 +72,10 @@ describe('falcorGet', () => {
 
   it('return null for undefined pathSet', () => {
     const Bar = falcorGet()(Foo)
-    const FooBar = () => (
-      <Provider falcor={model}>
+    const FooBar = () =>
+      (<Provider falcor={model}>
         <Bar />
-      </Provider>
-    )
+      </Provider>)
 
     const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBeNull()
@@ -87,28 +83,29 @@ describe('falcorGet', () => {
 
   it('allow null pathSet to render', () => {
     const Bar = falcorGet(null)(Foo)
-    const FooBar = () => (
-      <Provider falcor={model}>
+    const FooBar = () =>
+      (<Provider falcor={model}>
         <Bar greeting="Hi!" />
-      </Provider>
-    )
+      </Provider>)
 
     const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBe('<div>Hi!</div>')
   })
 
   it('can transform to props', () => {
-    const Bar = falcorGet(['todos[0].name', ['todos', 1, 'name']], ({json}) => {
-      expect(json.todos[0].name).toBe('get milk from corner store')
-      return {
-        greeting: json.todos[1].name,
-      }
-    })(Foo)
-    const FooBar = () => (
-      <Provider falcor={model}>
+    const Bar = falcorGet(
+      ['todos[0].name', ['todos', 1, 'name']],
+      ({json}) => {
+        expect(json.todos[0].name).toBe('get milk from corner store')
+        return {
+          greeting: json.todos[1].name,
+        }
+      },
+    )(Foo)
+    const FooBar = () =>
+      (<Provider falcor={model}>
         <Bar />
-      </Provider>
-    )
+      </Provider>)
 
     const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBe('<div>withdraw money from ATM</div>')
@@ -117,11 +114,10 @@ describe('falcorGet', () => {
 
   it('render nothing when mergeProps() return falsy value', () => {
     const Bar = falcorGet(['greeting'], () => null)(Foo)
-    const FooBar = () => (
-      <Provider falcor={model}>
+    const FooBar = () =>
+      (<Provider falcor={model}>
         <Bar />
-      </Provider>
-    )
+      </Provider>)
 
     const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBeNull()
@@ -129,22 +125,20 @@ describe('falcorGet', () => {
 
   it('can handle undefined value', () => {
     const Bar = falcorGet(['undefined', 'nested', 'value'])(Foo)
-    const FooBar = () => (
-      <Provider falcor={routerModel}>
+    const FooBar = () =>
+      (<Provider falcor={routerModel}>
         <Bar />
-      </Provider>
-    )
+      </Provider>)
     const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBeNull()
   })
 
   it('can handle null value', () => {
     const Bar = falcorGet(['null'])(Foo)
-    const FooBar = () => (
-      <Provider falcor={routerModel}>
+    const FooBar = () =>
+      (<Provider falcor={routerModel}>
         <Bar />
-      </Provider>
-    )
+      </Provider>)
     const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBeNull()
   })
@@ -157,11 +151,10 @@ describe('falcorGet', () => {
     })
 
     const Bar = falcorGet(['greeting'])(Foo)
-    const FooBar = () => (
-      <Provider falcor={model}>
+    const FooBar = () =>
+      (<Provider falcor={model}>
         <Bar />
-      </Provider>
-    )
+      </Provider>)
 
     const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBe('<div>Hello World!</div>')
@@ -190,11 +183,10 @@ describe('falcorGet', () => {
         greeting: res.json[path],
       }),
     )(Foo)
-    const FooBar = ({path}) => (
-      <Provider falcor={model}>
+    const FooBar = ({path}) =>
+      (<Provider falcor={model}>
         <Bar path={path} />
-      </Provider>
-    )
+      </Provider>)
     const wrapper = mount(<FooBar path="greeting" />)
     expect(wrapper.html()).toBe('<div>Hello World!</div>')
 
@@ -204,11 +196,10 @@ describe('falcorGet', () => {
 
   it('should resolve values for server-side rendering', () => {
     const Bar = falcorGet(['greeting'])(Foo)
-    const FooBar = () => (
-      <Provider falcor={model}>
+    const FooBar = () =>
+      (<Provider falcor={model}>
         <Bar />
-      </Provider>
-    )
+      </Provider>)
     const html = renderToStaticMarkup(<FooBar />)
     expect(html).toBe('<div>Hello World!</div>')
   })
@@ -226,7 +217,7 @@ describe('falcorGet', () => {
         greeting: res.json[path],
       }),
     )(Foo)
-    const setState = Bar.prototype.setState = jest.fn(Bar.prototype.setState)
+    const setState = (Bar.prototype.setState = jest.fn(Bar.prototype.setState))
     const wrapper = shallow(<Bar path="greeting" />, {
       context: {
         falcor: {
@@ -252,11 +243,10 @@ describe('falcorGet', () => {
   describe('defer option', () => {
     it('should render when defer = false', () => {
       const Bar = falcorGet(['greeting'], null, {defer: false})(Foo)
-      const FooBar = () => (
-        <Provider falcor={model}>
+      const FooBar = () =>
+        (<Provider falcor={model}>
           <Bar />
-        </Provider>
-      )
+        </Provider>)
 
       expect(shallow(<FooBar />).html()).toBe('<div>Hello World!</div>')
       expect(mount(<FooBar />).html()).toBe('<div>Hello World!</div>')
@@ -264,11 +254,10 @@ describe('falcorGet', () => {
 
     it('should shallow render nothing when defer = true', () => {
       const Bar = falcorGet(['greeting'], null, {defer: true})(Foo)
-      const FooBar = () => (
-        <Provider falcor={model}>
+      const FooBar = () =>
+        (<Provider falcor={model}>
           <Bar />
-        </Provider>
-      )
+        </Provider>)
 
       expect(shallow(<FooBar />).html()).toBe('')
       expect(mount(<FooBar />).html()).toBe('<div>Hello World!</div>')
@@ -278,12 +267,14 @@ describe('falcorGet', () => {
   describe('loading option', () => {
     it('can set loading component', () => {
       const Loading = () => <div>Loading</div>
-      const Bar = falcorGet(['greeting'], null, {defer: true, loadingComponent: Loading})(Foo)
-      const FooBar = () => (
-        <Provider falcor={model}>
+      const Bar = falcorGet(['greeting'], null, {
+        defer: true,
+        loadingComponent: Loading,
+      })(Foo)
+      const FooBar = () =>
+        (<Provider falcor={model}>
           <Bar />
-        </Provider>
-      )
+        </Provider>)
 
       expect(shallow(<FooBar />).html()).toBe('<div>Loading</div>')
       expect(mount(<FooBar />).html()).toBe('<div>Hello World!</div>')
@@ -291,12 +282,14 @@ describe('falcorGet', () => {
 
     it('have no effect when defer = false', () => {
       const Loading = () => <div>Loading</div>
-      const Bar = falcorGet(['greeting'], null, {defer: false, loadingComponent: Loading})(Foo)
-      const FooBar = () => (
-        <Provider falcor={model}>
+      const Bar = falcorGet(['greeting'], null, {
+        defer: false,
+        loadingComponent: Loading,
+      })(Foo)
+      const FooBar = () =>
+        (<Provider falcor={model}>
           <Bar />
-        </Provider>
-      )
+        </Provider>)
 
       expect(shallow(<FooBar />).html()).toBe('<div>Hello World!</div>')
       expect(mount(<FooBar />).html()).toBe('<div>Hello World!</div>')
