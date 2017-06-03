@@ -4,6 +4,7 @@ import EventEmitter from 'eventemitter3'
 
 import {shallow, mount} from 'enzyme'
 import {renderToStaticMarkup} from 'react-dom/server'
+import compose from 'recompose/compose'
 import falcor from 'falcor'
 import React from 'react'
 
@@ -293,6 +294,36 @@ describe('falcorGet', () => {
 
       expect(shallow(<FooBar />).html()).toBe('<div>Hello World!</div>')
       expect(mount(<FooBar />).html()).toBe('<div>Hello World!</div>')
+    })
+  })
+
+  describe('compose with defer', () => {
+    const Bar = compose(
+      falcorGet(['greeting'], null),
+      falcorGet(['todos[0].name', ['todos', 1, 'name']], null, {
+        defer: true,
+      }),
+    )(Foo)
+    const FooBar = jest.fn(() =>
+      (<Provider falcor={model}>
+        <Bar />
+      </Provider>),
+    )
+
+    beforeEach(() => {
+      FooBar.mockClear()
+    })
+
+    it('render greeting after mount', () => {
+      const wrapper = mount(<FooBar />)
+      expect(wrapper.html()).toBe('<div>Hello World!</div>')
+      expect(FooBar).toHaveBeenCalledTimes(1)
+    })
+
+    it('render nothing for shallow render', async () => {
+      const wrapper = shallow(<FooBar />)
+      expect(wrapper.html()).toBe('')
+      expect(FooBar).toHaveBeenCalledTimes(1)
     })
   })
 })
