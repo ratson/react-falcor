@@ -13,8 +13,29 @@ const source = new Router([
   },
   {
     route: 'delayed',
+    async get() {
+      await delay(100)
+      return jsong.pathValue(['delayed'], 'delayed')
+    },
+    call() {
+      return jsong.pathValue(['delayed'], 'called')
+    },
+  },
+  {
+    route: 'called',
+    call() {
+      return jsong.pathValue(
+        ['called'],
+        jsong.atom({
+          hello: 'world',
+        }),
+      )
+    },
+  },
+  {
+    route: 'greeting',
     get() {
-      return delay(100).then(() => jsong.pathValue(['delayed'], 'delayed'))
+      return jsong.pathValue(['greeting'], 'Hello World!')
     },
   },
 ])

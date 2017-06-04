@@ -320,9 +320,53 @@ describe('falcorGet', () => {
       expect(FooBar).toHaveBeenCalledTimes(1)
     })
 
-    it('render nothing for shallow render', async () => {
+    it('render nothing for shallow render', () => {
       const wrapper = shallow(<FooBar />)
       expect(wrapper.html()).toBe('')
+      expect(FooBar).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('delayed with falcor.call()', () => {
+    const Bar = compose(
+      falcorGet(['delayed'], null),
+      falcorGet(['greeting'], null, {defer: true}),
+    )(Foo)
+    const FooBar = jest.fn(() =>
+      (<Provider falcor={routerModel}>
+        <Bar />
+      </Provider>),
+    )
+
+    const wrapper = mount(<FooBar />)
+
+    it('load data', async () => {
+      const res = await routerModel.get(['delayed'], ['greeting'])
+      expect(res).toEqual({
+        json: {delayed: 'delayed', greeting: 'Hello World!'},
+      })
+    })
+
+    it('render once after data is loaded', () => {
+      expect(wrapper.html()).toBe('<div>Hello World!</div>')
+      expect(FooBar).toHaveBeenCalledTimes(1)
+    })
+
+    it('do falcor.call()', async () => {
+      const res = await routerModel.call(['called'])
+      expect(res).toEqual({json: {called: {hello: 'world'}}})
+    })
+
+    it('do not re-render', () => {
+      expect(FooBar).toHaveBeenCalledTimes(1)
+    })
+
+    it('do falcor.call() again', async () => {
+      const res = await routerModel.call(['delayed'])
+      expect(res).toEqual({json: {delayed: 'called'}})
+    })
+
+    it('do not re-render', () => {
       expect(FooBar).toHaveBeenCalledTimes(1)
     })
   })
