@@ -144,7 +144,7 @@ describe('falcorGet', () => {
     expect(wrapper.html()).toBeNull()
   })
 
-  it('re-fetch on invalidate', () => {
+  it('re-fetch on invalidate', async () => {
     const localModel = new falcor.Model({
       cache: {
         greeting: 'Hello World!',
@@ -160,14 +160,13 @@ describe('falcorGet', () => {
     const wrapper = mount(<FooBar />)
     expect(wrapper.html()).toBe('<div>Hello World!</div>')
 
-    return delay().then(() => {
-      const cache = localModel.getCache()
-      localModel.invalidate('greeting')
-      _.set(cache, 'greeting.value', 'Hi!')
-      localModel.setCache(cache)
+    await delay()
+    const cache = localModel.getCache()
+    localModel.invalidate('greeting')
+    _.set(cache, 'greeting.value', 'Hi!')
+    localModel.setCache(cache)
 
-      return expect(wrapper.html()).toBe('<div>Hi!</div>')
-    })
+    expect(wrapper.html()).toBe('<div>Hi!</div>')
   })
 
   it('should re-render with updated props', () => {
