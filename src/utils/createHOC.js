@@ -5,15 +5,19 @@ import shallowEqual from 'recompose/shallowEqual'
 
 import falcorShape from './falcorShape'
 
-export default function createHOC(createHandler, {
-  defer = false,
-  pure = true,
-  loadingComponent,
-  getDisplayName = name => `Resolve(${name})`,
-} = {}, ...args) {
+export default function createHOC(
+  createHandler,
+  {
+    defer = false,
+    pure = true,
+    loadingComponent,
+    getDisplayName = name => `Resolve(${name})`,
+  } = {},
+  ...args
+) {
   const Loading = loadingComponent
 
-  return (WrappedComponent) => {
+  return WrappedComponent => {
     class Resolve extends React.Component {
       static displayName = getDisplayName(getComponentName(WrappedComponent))
 
@@ -41,7 +45,7 @@ export default function createHOC(createHandler, {
 
       componentWillReceiveProps(nextProps) {
         if (!pure || !shallowEqual(nextProps, this.props)) {
-          this.setState({loading: true}, () => {
+          this.setState({ loading: true }, () => {
             this.subscribe(nextProps)
           })
         }
@@ -51,7 +55,11 @@ export default function createHOC(createHandler, {
         if (this.version !== this.falcor.getVersion()) {
           return true
         }
-        return !pure || !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState)
+        return (
+          !pure ||
+          !shallowEqual(this.props, nextProps) ||
+          !shallowEqual(this.state, nextState)
+        )
       }
 
       componentWillUpdate() {
@@ -84,12 +92,16 @@ export default function createHOC(createHandler, {
         }
         this.handler.unsubscribe()
 
-        this.handler.subscribe(this.falcor, props, (state) => {
+        this.handler.subscribe(this.falcor, props, state => {
           // HACK avoid server-side rendering setState() no-op
           // this is happened when calling renderToString(),
           // this callback is run after component is rendered,
           // which triggering the warning
-          if (this.updater && this.updater.transaction && this.updater.transaction._isInTransaction === false) {
+          if (
+            this.updater &&
+            this.updater.transaction &&
+            this.updater.transaction._isInTransaction === false
+          ) {
             return
           }
 
@@ -105,9 +117,7 @@ export default function createHOC(createHandler, {
         if (props === null) {
           return null
         }
-        return (
-          <WrappedComponent {...props} />
-        )
+        return <WrappedComponent {...props} />
       }
     }
 

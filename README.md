@@ -10,12 +10,13 @@ npm install react-falcor --save
 
 ## Usage
 
+<!-- eslint-env browser -->
+
 ```js
-/* eslint-env browser */
-import {Model} from 'falcor'
+import { Model } from 'falcor'
 import HttpDataSource from 'falcor-http-datasource'
 
-import {Provider, falcorGet} from 'react-falcor'
+import { Provider, falcorGet } from 'react-falcor'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
@@ -25,7 +26,7 @@ const falcor = new Model({
 
 const App = falcorGet([
   ['greeting'],
-])(({greeting}) => <p>{greeting}</p>)
+])(({ greeting }) => <p>{greeting}</p>)
 
 ReactDOM.render(
   <Provider falcor={falcor}>

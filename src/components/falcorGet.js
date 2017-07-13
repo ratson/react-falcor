@@ -14,7 +14,7 @@ export function defaultMergeProps(response, ownProps) {
   if (response === NO_RESPONSE) {
     return null
   }
-  const {json} = response || {}
+  const { json } = response || {}
   return {
     ...ownProps,
     ...json,
@@ -31,9 +31,7 @@ function computePathSets(props, getPathSets) {
 }
 
 function createHandler(getPathSets, mergeProps) {
-  if (!mergeProps) {
-    mergeProps = defaultMergeProps
-  }
+  const mergePropsFn = mergeProps || defaultMergeProps
 
   let subscription = null
 
@@ -47,7 +45,7 @@ function createHandler(getPathSets, mergeProps) {
   return {
     defaultState,
     computeProps(props, state) {
-      const newProps = mergeProps(state.response, props)
+      const newProps = mergePropsFn(state.response, props)
       if (!newProps) {
         return null
       }
@@ -62,27 +60,36 @@ function createHandler(getPathSets, mergeProps) {
         return
       }
       let hasResponse = false
-      subscription = falcor.get(...pathSets).subscribe((response) => {
-        hasResponse = true
-        setState({
-          loading: false,
-          response,
-        })
-      }, () => {
-      }, () => {
-        if (!hasResponse) {
+      subscription = falcor.get(...pathSets).subscribe(
+        response => {
+          hasResponse = true
           setState({
             loading: false,
-            response: NO_RESPONSE,
+            response,
           })
-        }
-      })
+        },
+        () => {},
+        () => {
+          if (!hasResponse) {
+            setState({
+              loading: false,
+              response: NO_RESPONSE,
+            })
+          }
+        },
+      )
     },
     unsubscribe,
   }
 }
 
-export default (getPathSets, mergeProps, opts) => createHOC(createHandler, {
-  getDisplayName: name => `falcorGet(${name})`,
-  ...opts,
-}, getPathSets, mergeProps)
+export default (getPathSets, mergeProps, opts) =>
+  createHOC(
+    createHandler,
+    {
+      getDisplayName: name => `falcorGet(${name})`,
+      ...opts,
+    },
+    getPathSets,
+    mergeProps,
+  )

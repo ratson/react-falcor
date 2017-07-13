@@ -8,8 +8,13 @@ const defaultState = {
 }
 
 function computePathSetToProps(props, mapPathSetToProps) {
-  const pathSetToProps = _.isFunction(mapPathSetToProps) ? mapPathSetToProps(props) : mapPathSetToProps
-  warning(typeof pathSetToProps !== 'undefined', '"pathSetToProps" is undefined')
+  const pathSetToProps = _.isFunction(mapPathSetToProps)
+    ? mapPathSetToProps(props)
+    : mapPathSetToProps
+  warning(
+    typeof pathSetToProps !== 'undefined',
+    '"pathSetToProps" is undefined',
+  )
   return pathSetToProps || {}
 }
 
@@ -40,27 +45,35 @@ function createHandler(mapPathSetToProps) {
     subscribe(falcor, props, setState) {
       const pathSetToProps = computePathSetToProps(props, mapPathSetToProps)
       const propKeys = Object.keys(pathSetToProps)
-      subscriptions = propKeys.map((prop) => {
+      subscriptions = propKeys.map(prop => {
         const pathSet = pathSetToProps[prop]
-        return falcor.getValue(pathSet).subscribe((value) => {
-          resolved[prop] = value
-        }, () => {
-        }, () => {
-          resolvedCount += 1
+        return falcor.getValue(pathSet).subscribe(
+          value => {
+            resolved[prop] = value
+          },
+          () => {},
+          () => {
+            resolvedCount += 1
 
-          if (resolvedCount === propKeys.length) {
-            setState({
-              loading: false,
-            })
-          }
-        })
+            if (resolvedCount === propKeys.length) {
+              setState({
+                loading: false,
+              })
+            }
+          },
+        )
       })
     },
     unsubscribe,
   }
 }
 
-export default (mapPathSetToProps, opts) => createHOC(createHandler, {
-  getDisplayName: name => `falcorGetValue(${name})`,
-  ...opts,
-}, mapPathSetToProps)
+export default (mapPathSetToProps, opts) =>
+  createHOC(
+    createHandler,
+    {
+      getDisplayName: name => `falcorGetValue(${name})`,
+      ...opts,
+    },
+    mapPathSetToProps,
+  )

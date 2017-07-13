@@ -3,7 +3,7 @@ import EventEmitter from 'eventemitter3'
 import invariant from 'invariant'
 
 import React from 'react'
-import {PropTypes} from 'prop-types'
+import { PropTypes } from 'prop-types'
 
 import falcorShape from '../utils/falcorShape'
 
@@ -11,7 +11,7 @@ class Provider extends React.Component {
   constructor(props, context) {
     super(props, context)
 
-    const {falcor} = props
+    const { falcor } = props
     invariant(props, '"falcor" is not provided')
 
     const eventEmitter = new EventEmitter()
@@ -43,7 +43,7 @@ class Provider extends React.Component {
   }
 
   render() {
-    const {children} = this.props
+    const { children } = this.props
     return React.Children.only(children)
   }
 }

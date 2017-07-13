@@ -23,7 +23,7 @@ describe('router-model', () => {
     expect(res).toBeUndefined()
 
     const res2 = await model.get(['undefined', 'value'], ['delayed'])
-    expect(res2).toEqual({json: {delayed: 'delayed'}})
+    expect(res2).toEqual({ json: { delayed: 'delayed' } })
   })
 
   it('can read delayed value', async () => {

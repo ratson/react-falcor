@@ -1,14 +1,14 @@
 import React from 'react'
-import {mount} from 'enzyme'
+import { mount } from 'enzyme'
 
-import {Provider, withFalcor} from '../../src'
+import { Provider, withFalcor } from '../../src'
 
 import Foo from '../fixtures/Foo'
 import model from '../fixtures/model'
 
 describe('withFalcor', () => {
   it('render wrapped component with `falcor` prop', () => {
-    const Mock = jest.fn(({falcor}) => {
+    const Mock = jest.fn(({ falcor }) => {
       expect(falcor.model).toBe(model)
       return <Foo />
     })
@@ -25,7 +25,7 @@ describe('withFalcor', () => {
   })
 
   it('can rename `falcor` prop', () => {
-    const Mock = jest.fn(({awesome, falcor}) => {
+    const Mock = jest.fn(({ awesome, falcor }) => {
       expect(falcor).toBeUndefined()
       expect(awesome.model).toBe(model)
       return <Foo />

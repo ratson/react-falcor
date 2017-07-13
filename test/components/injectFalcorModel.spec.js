@@ -1,14 +1,14 @@
 import React from 'react'
-import {mount} from 'enzyme'
+import { mount } from 'enzyme'
 
-import {Provider, injectFalcorModel} from '../../src'
+import { Provider, injectFalcorModel } from '../../src'
 
 import Foo from '../fixtures/Foo'
 import model from '../fixtures/model'
 
 describe('injectFalcorModel', () => {
   it('render wrapped component with `falcorModel` prop', () => {
-    const Mock = jest.fn(({falcorModel}) => {
+    const Mock = jest.fn(({ falcorModel }) => {
       expect(falcorModel).toBe(model)
       return <Foo />
     })

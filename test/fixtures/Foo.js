@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Foo = ({greeting}) => (
+const Foo = ({ greeting }) => (
   <div>{greeting}</div>
 )
 

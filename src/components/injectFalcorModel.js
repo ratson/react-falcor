@@ -3,7 +3,7 @@ import getDisplayName from 'recompose/getDisplayName'
 
 import falcorShape from '../utils/falcorShape'
 
-export default (WrappedComponent) => {
+export default WrappedComponent => {
   const InjectFalcorModel = (props, context) => (
     <WrappedComponent
       {...props}
