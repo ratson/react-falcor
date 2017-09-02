@@ -9,8 +9,9 @@
     "clean": "del lib",
     "prepublish": "run-s clean build",
     "lint": "eslint --ext js,jsx,md .",
+    "size": "size-limit",
     "test": "jest",
-    "posttest": "npm run lint"
+    "posttest": "run-s lint build size"
   },
   "peerDependencies": {
     "react": "*"
@@ -52,7 +53,8 @@
     "react": "^15.6.1",
     "react-addons-test-utils": "^15.6.0",
     "react-dom": "^15.6.1",
-    "react-test-renderer": "^15.6.1"
+    "react-test-renderer": "^15.6.1",
+    "size-limit": "^0.10.0"
   },
   "repository": "ratson/react-falcor",
   "license": "MIT",
@@ -65,5 +67,11 @@
   "keywords": [
     "falcor",
     "react"
+  ],
+  "size-limit": [
+    {
+      "path": "lib/index.js",
+      "limit": "20 KB"
+    }
   ]
 }
