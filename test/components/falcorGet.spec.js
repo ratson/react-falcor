@@ -163,7 +163,7 @@ describe('falcorGet', () => {
     await delay()
     const cache = localModel.getCache()
     localModel.invalidate('greeting')
-    _.set(cache, 'greeting.value', 'Hi!')
+    _.set(cache, 'greeting', 'Hi!')
     localModel.setCache(cache)
 
     expect(wrapper.html()).toBe('<div>Hi!</div>')

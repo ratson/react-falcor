@@ -62,7 +62,7 @@ function createHandler(getPathSets, mergeProps) {
       let hasResponse = false
       subscription = falcor.get(...pathSets).subscribe(
         response => {
-          hasResponse = true
+          hasResponse = _.size(_.get(response, 'json')) > 0
           setState({
             loading: false,
             response,
