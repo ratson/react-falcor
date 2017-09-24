@@ -8,7 +8,7 @@
     "dev": "cross-env NODE_ENV=development babel --watch --source-maps --out-dir=lib/ src/",
     "clean": "del lib",
     "prepublish": "run-s clean build",
-    "lint": "eslint --ext js,jsx,md .",
+    "lint": "eslint --ignore-path .gitignore --ext js,jsx,md .",
     "size": "size-limit",
     "test": "run-p test:* lint",
     "test:jest": "jest",
