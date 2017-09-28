@@ -23,14 +23,14 @@
     "hoist-non-react-statics": "^2.3.1",
     "invariant": "^2.2.2",
     "lodash": "^4.17.4",
-    "prop-types": "^15.5.10",
-    "recompose": "^0.25.0",
+    "prop-types": "^15.6.0",
+    "recompose": "^0.25.1",
     "warning": "^3.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.0.0",
-    "babel-jest": "^21.0.2",
+    "babel-eslint": "^8.0.1",
+    "babel-jest": "^21.2.0",
     "babel-plugin-dev-expression": "^0.2.1",
     "babel-plugin-lodash": "^3.2.11",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.8",
@@ -41,7 +41,8 @@
     "cross-env": "^5.0.5",
     "del-cli": "^1.1.0",
     "delay": "^2.0.0",
-    "enzyme": "^2.9.1",
+    "enzyme": "^3.0.0",
+    "enzyme-adapter-react-16": "^1.0.0",
     "eslint": "^4.7.2",
     "eslint-config-concise": "^0.12.0",
     "eslint-config-concise-esnext": "^0.12.0",
@@ -49,12 +50,13 @@
     "falcor": "^2.0.0-rc1",
     "falcor-json-graph": "^1.1.7",
     "falcor-router": "^0.8.1",
-    "jest": "^21.1.0",
+    "jest": "^21.2.1",
     "npm-run-all": "^4.1.1",
-    "react": "^15.6.1",
-    "react-addons-test-utils": "^15.6.0",
-    "react-dom": "^15.6.1",
-    "react-test-renderer": "^15.6.1",
+    "raf": "^3.3.2",
+    "react": "^16.0.0",
+    "react-addons-test-utils": "^15.6.2",
+    "react-dom": "^16.0.0",
+    "react-test-renderer": "^16.0.0",
     "size-limit": "^0.11.4"
   },
   "browserslist": [
@@ -73,10 +75,16 @@
     "falcor",
     "react"
   ],
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/node_modules/raf/polyfill.js",
+      "<rootDir>/test/helpers/enzyme-config.js"
+    ]
+  },
   "size-limit": [
     {
       "path": "lib/index.js",
-      "limit": "20 KB"
+      "limit": "13 KB"
     }
   ]
 }
