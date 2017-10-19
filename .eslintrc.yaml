@@ -2,5 +2,3 @@ extends:
   - concise
   - concise-esnext
   - concise-react
-rules:
-  react/jsx-filename-extension: off
