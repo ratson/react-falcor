@@ -122,6 +122,7 @@ export default function createHOC(
     }
 
     Resolve.contextTypes = {
+      // eslint-disable-next-line react/no-typos
       falcor: falcorShape.isRequired,
     }
 
