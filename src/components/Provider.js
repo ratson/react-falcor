@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import EventEmitter from 'eventemitter3'
+import EventEmitter from 'nanoevents'
 import invariant from 'invariant'
 
 import React from 'react'

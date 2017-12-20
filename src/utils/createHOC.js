@@ -67,7 +67,7 @@ export default function createHOC(
       }
 
       componentWillUnmount() {
-        this.eventEmitter.removeListener('change', this.onModelChange)
+        this._unsubscribe()
         this.eventEmitter = null
 
         this.handler.unsubscribe()
@@ -82,7 +82,7 @@ export default function createHOC(
       }
 
       listenAndSubscribe() {
-        this.eventEmitter.on('change', this.onModelChange)
+        this._unsubscribe = this.eventEmitter.on('change', this.onModelChange)
         this.subscribe(this.props)
       }
 
