@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import delay from 'delay'
-import EventEmitter from 'eventemitter3'
+import EventEmitter from 'nanoevents'
 
 import { shallow, mount } from 'enzyme'
 import { renderToStaticMarkup } from 'react-dom/server'
