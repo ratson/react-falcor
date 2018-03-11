@@ -57,7 +57,6 @@ Provider.propTypes = {
   children: PropTypes.element.isRequired,
 }
 Provider.childContextTypes = {
-  // eslint-disable-next-line react/no-typos
   falcor: falcorShape.isRequired,
 }
 
