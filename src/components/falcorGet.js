@@ -68,7 +68,7 @@ function createHandler(getPathSets, mergeProps) {
           if (!hasResponse) {
             setState({
               loading: false,
-              response: NO_RESPONSE,
+              response: {},
             })
           }
         },
