@@ -1,14 +1,14 @@
 {
   "presets": [
-    ["env", {
-      "useBuiltIns": true
+    ["@babel/preset-env", {
+      "useBuiltIns": "usage"
     }],
-    "stage-0",
-    "react"
+    "@babel/preset-stage-0",
+    "@babel/preset-react"
   ],
   "plugins": [
     "dev-expression",
-    "transform-runtime",
+    "@babel/plugin-transform-runtime",
     ["transform-react-remove-prop-types", {"mode": "wrap"}],
     "lodash"
   ]
